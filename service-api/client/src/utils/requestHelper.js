@@ -1,22 +1,5 @@
 import request from 'superagent';
 import ApiHelper from './apiHelper';
-const endPoint = 'http://tul1dsgdapp01.corporate.local:8089/v1/cqa-reports/';
-
-const Apis = {
-	"/": "getData/sports/sportTypes",
-	"/sports": "getData/sports/sportsCompetitions",
-	"/league": "getData/sports/sportTeams",
-	"/matchUpCoverage": "getData/sports/matchUpCoverage",
-	"/logoCoverage": "getData/sports/logoCoverage",
-	"/team": "getData/sports/sportPlayers",
-	"/games": "postData"
-};
-const queries = {
-
-};
-function getPath(url) {
-    return Apis[url];
-};
 
 function postRequest(pathParam) {
 	let path = ApiHelper.doPostEndPoint(pathParam);
@@ -39,10 +22,14 @@ export default {
     },
 
     postData: function(pathParam, queryString = "", cb) {
-        let path = ApiHelper.doPostEndPoint(pathParam);
-        return request
-                .post(path.path)
-                .send(path.data)
-                .set('Content-Type', 'application/json');
+        let path = ApiHelper.doPostEndPoint(pathParam, queryString);
+        return window.fetch(path.path, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(path.data)
+          });
     }
 }

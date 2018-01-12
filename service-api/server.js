@@ -25,6 +25,12 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('public'))
 }
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(bodyParser.json())
 
 app.post('/createUser', (req, res) => {
@@ -37,13 +43,16 @@ app.post('/createUser', (req, res) => {
     })
     .then(() => res.sendStatus(200))
 })
+
 app.post('/login', (req, res) => {
+  // console.log(req.body);
   store
     .authenticate({
       username: req.body.username,
       password: req.body.password
     })
     .then(({ success }) => {
+      // console.log("status to send: " + success)
       if (success) res.sendStatus(200)
       else res.sendStatus(401)
     })

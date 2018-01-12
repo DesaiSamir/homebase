@@ -9,8 +9,8 @@ class Home extends Component{
     onSubmit(e){
         e.preventDefault();
         console.log("Button Clicked!!")
-        const username = ""//Login.querySelector('.username').value
-        const password = ""//Login.querySelector('.password').value
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
         requests.postData('/login', { username, password })
             .then(({ status }) => {
             if (status === 200) alert('login success')
@@ -23,8 +23,8 @@ class Home extends Component{
         let loginForm = (
             <form class="Login" id="Login" onSubmit={this.onSubmit}>
                 <h1>Login</h1>
-                <input type="text" class="username" placeholder="username" />
-                <input type="password" class="password" placeholder="password" />
+                <input type="text" id="username" ref="username" placeholder="username" />
+                <input type="password" id="password" ref="password" placeholder="password" />
                 <input type="submit" value="Login"/>
             </form>
         );

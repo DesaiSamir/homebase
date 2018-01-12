@@ -14,7 +14,7 @@ module.exports = {
     }).debug()
   },
   authenticate ({ username, password }) {
-    console.log(`Authenticating user ${username}`)
+    // console.log(`Authenticating user ${username}`)
     return knex('user').where({ username })
       .then(([user]) => {
         if (!user) return { success: false }
@@ -22,6 +22,7 @@ module.exports = {
           password,
           salt: user.salt
         })
+        // console.log("hash: '" + hash + "' user: '" + user.encrypted_password + "'");
         return { success: hash === user.encrypted_password }
       })
   }
