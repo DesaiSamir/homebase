@@ -1,0 +1,7 @@
+.formInput {
+    display: grid;
+}
+
+input {
+    margin: 20px;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import requests from '../utils/requestHelper'
+import '../style/home.css';
 
 class Home extends Component{
     constructor(props){
@@ -23,9 +24,11 @@ class Home extends Component{
         let loginForm = (
             <form class="Login" id="Login" onSubmit={this.onSubmit}>
                 <h1>Login</h1>
-                <input type="text" id="username" ref="username" placeholder="username" />
-                <input type="password" id="password" ref="password" placeholder="password" />
-                <input type="submit" value="Login"/>
+                <div class="formInputs">
+                    <input type="text" id="username" ref="username" placeholder="username" />
+                    <input type="password" id="password" ref="password" placeholder="password" />
+                    <input type="submit" value="Login"/>
+                </div>
             </form>
         );
 
