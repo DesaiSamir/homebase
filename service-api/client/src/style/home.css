@@ -1,5 +1,6 @@
-.formInput {
-    display: grid;
+.form-input {
+    display: inline-grid;
+    width: 200px;
 }
 
 input {

@@ -3,9 +3,9 @@ import requests from '../utils/requestHelper'
 import '../style/home.css';
 
 class Home extends Component{
-    constructor(props){
-        super(props);
-    }
+    // constructor(props){
+    //     super(props);
+    // }
 
     onSubmit(e){
         e.preventDefault();
@@ -14,8 +14,12 @@ class Home extends Component{
         const password = document.getElementById("password").value;
         requests.postData('/login', { username, password })
             .then(({ status }) => {
-            if (status === 200) alert('login success')
-            else alert('login failed')
+            if (status === 200) {
+                alert('login success')
+                window.location = "/home";
+            }
+            else 
+                alert('login failed')
             })
     }
 
@@ -24,7 +28,7 @@ class Home extends Component{
         let loginForm = (
             <form class="Login" id="Login" onSubmit={this.onSubmit}>
                 <h1>Login</h1>
-                <div class="formInputs">
+                <div class="form-input">
                     <input type="text" id="username" ref="username" placeholder="username" />
                     <input type="password" id="password" ref="password" placeholder="password" />
                     <input type="submit" value="Login"/>
