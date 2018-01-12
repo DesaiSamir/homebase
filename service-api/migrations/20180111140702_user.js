@@ -5,6 +5,8 @@ exports.up = function(knex, Promise) {
         t.string('firstname').nullable()
         t.string('lastname').nullable()
         t.string('password').notNullable()
+        t.timestamp('created_at').defaultTo(knex.fn.now())
+        t.timestamp('updated_at').nullable()
       })
 };
 
