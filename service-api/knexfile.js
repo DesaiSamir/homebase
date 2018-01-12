@@ -1,8 +1,8 @@
 module.exports = {
-    client: 'mysql',
-    connection: {
-      user: 'root',
-      password: 'root',
-      database: 'homebase'
-    }
+  client: 'mysql',
+  connection: {
+    user: 'root',
+    password: 'root',
+    database: 'homebase'
   }
+};
