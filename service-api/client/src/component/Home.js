@@ -16,7 +16,7 @@ class Home extends Component{
             .then(({ status }) => {
             if (status === 200) {
                 alert('login success')
-                window.location = "/home";
+                window.location= "/About";
             }
             else 
                 alert('login failed')
@@ -41,6 +41,7 @@ class Home extends Component{
 
     render(){
         console.log("Rendering Home");
+        // var content = document.getElementById('content');
         return  <div>
             {this.renderLoginForm()}
         </div>

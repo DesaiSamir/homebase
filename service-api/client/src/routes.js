@@ -1,18 +1,22 @@
-var React = require('react');
-var Router = require('react-router-dom').BrowserRouter;
-var Route = require('react-router-dom').Route;
-// var hasHistory = require('react-router').hashHistory;
-var IndexRoute = require('react-router-dom').IndexRoute;
-// var Redirect = require('react-router').Redirect;
+import React from 'react';
+import './style/index.css';
+import {
+    BrowserRouter as Router,
+    Route
+  } from 'react-router-dom';
 
 var App = require('./App')
 var Home = require('./component/Home')
+var About = require('./component/About')
 
-var routes = <Router>
-        <Route path="/" component={App}>
-            <IndexRoute component={Home} />
-            <Route path="home" component={Home} />
-        </Route>
+const routes = <Router>
+        <div>
+            <Route path="/" component={App} ></Route>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/About" component={About} />
+            
+        </div>
     </Router>;
 
 module.exports = routes;

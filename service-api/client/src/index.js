@@ -3,23 +3,25 @@ import ReactDOM from 'react-dom';
 import './style/index.css';
 import {
     BrowserRouter as Router,
-    Route,
-    Link
+    Route
   } from 'react-router-dom';
 import App from './App'
 import Home from './component/Home'
+import About from './component/About';
 // import routes from './routes';
 import registerServiceWorker from './service/registerServiceWorker';
 
 ReactDOM.render(
     <Router>
         <div>
-            <Route exact path="/" component={App} ><Route path="/home" children={Home} /></Route>
-                {/* <Route path="/home" component={Home} /> */}
+            <Route path="/" component={App} ></Route>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/About" component={About} />
             
         </div>
     </Router>,
-    // routes,
+    // <Router routes={routes} />,
     document.getElementById('root')
 );
 

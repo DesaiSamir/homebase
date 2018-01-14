@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import logo from './sd_logo.png';
 import './style/App.css';
-import { NavLink } from 'react-router-dom'
-import Home from './component/Home'
+// import Home from './component/Home'
 
 class App extends Component {
   render() {
@@ -16,10 +15,10 @@ class App extends Component {
             Expense App
           </div>
         </header>
-        <div className="content">
+        <div id="content" className="content">
           {/* <Home />       */}
           {/* <NavLink to="/home" /> */}
-          {this.props.children}
+          {/* {this.props.children} */}
         </div>        
       </div>
     );
