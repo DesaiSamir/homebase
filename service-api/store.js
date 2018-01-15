@@ -11,7 +11,7 @@ module.exports = {
       username,
       firstname,
       lastname
-    }).debug()
+    })
   },
   authenticate ({ username, password }) {
     // console.log(`Authenticating user ${username}`)
@@ -25,6 +25,16 @@ module.exports = {
         // console.log("hash: '" + hash + "' user: '" + user.encrypted_password + "'");
         return { success: hash === user.encrypted_password }
       })
+  },
+  createCategory ({ category }) {
+    console.log(`Add category: ${category}`)
+    return knex('category').insert({
+      category
+    })
+  },
+  getCategory (){
+    var category = knex('category').select('categoryid','category')
+    return category
   }
 }
 

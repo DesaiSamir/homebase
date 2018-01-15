@@ -15,11 +15,11 @@ class App extends Component {
             Expense App
           </div>
         </header>
-        <div id="content" className="content">
-          {/* <Home />       */}
-          {/* <NavLink to="/home" /> */}
-          {/* {this.props.children} */}
-        </div>        
+        {/* <div id="content" className="content">
+          <Home />      
+          <NavLink to="/home" />
+          {this.props.children}
+        </div>         */}
       </div>
     );
   }

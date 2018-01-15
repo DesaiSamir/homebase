@@ -2,26 +2,27 @@ const endPoint = 'http://localhost:3001';
 
 const Apis = {
 	"/login": "/login",
-	"/sports": "getData/sports/sportsCompetitions"
+	"/getCategory": "/getCategory",
+	"/createCategory": "/createCategory"
 };
 
-const queries = {
-	"/": "",
-	"/sports": "?paramName=sportType&paramValue="
-};
+// const queries = {
+// 	"/": "",
+// 	"/sports": "?paramName=sportType&paramValue="
+// };
 
 function getPath(url) {
     return Apis[url];
 };
-function getQueryString(url) {
-    return queries[url];
-};
+// function getQueryString(url) {
+//     return queries[url];
+// };
 
 module.exports = {
 
 	doGetEndPoint: function(url) {
 		let path = url.split("/");
-		let apiPath = endPoint + getPath("/" + path[1]) + getQueryString("/" + path[1]) + (path[2]?path[2]:"");
+		let apiPath = endPoint + getPath("/" + path[1]);
 		return apiPath;
 	},
 

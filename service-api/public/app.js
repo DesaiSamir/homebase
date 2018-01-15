@@ -21,6 +21,30 @@ Login.addEventListener('submit', (e) => {
     })
 })
 
+const CreateCategory = document.querySelector('.CreateCategory')
+CreateCategory.addEventListener('submit', (e) => {
+  e.preventDefault()
+  const category = CreateCategory.querySelector('.categoryName').value
+  // console.log(`createCategory: ${category} ` )
+  post('/createCategory', { category })
+})
+
+const GetCategory = document.querySelector('.GetCategory')
+GetCategory.addEventListener('submit',(e)=>{
+  e.preventDefault()
+  var response = get('/category');
+  get('/category')
+    .then(function(res){
+      if (res.ok) {
+        res.json().then(function(data) {
+          console.log(data.entries);
+        });
+      } else {
+        console.log("Looks like the response wasn't perfect, got status", res.status);
+      }
+    })
+})
+
 function post (path, data) {
   console.log(data)
   return window.fetch(path, {
@@ -30,5 +54,16 @@ function post (path, data) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
+  })
+}
+
+function get (path){
+  console.log(path)
+  return window.fetch(path,{
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   })
 }

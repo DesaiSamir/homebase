@@ -15,8 +15,7 @@ class Home extends Component{
         requests.postData('/login', { username, password })
             .then(({ status }) => {
             if (status === 200) {
-                alert('login success')
-                window.location= "/About";
+                window.location= "/Category";
             }
             else 
                 alert('login failed')
@@ -42,7 +41,7 @@ class Home extends Component{
     render(){
         console.log("Rendering Home");
         // var content = document.getElementById('content');
-        return  <div>
+        return  <div className="content">
             {this.renderLoginForm()}
         </div>
     }

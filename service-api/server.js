@@ -44,6 +44,24 @@ app.post('/createUser', (req, res) => {
     .then(() => res.sendStatus(200))
 })
 
+app.post('/createCategory', (req, res) => {
+  store
+    .createCategory({
+      category: req.body.category
+    })
+    .then(() => res.sendStatus(200))
+})
+
+app.get('/category', (req, res) => {
+  store.getCategory()
+    .then((category) => {
+      res.status(200).json(category);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+})
+
 app.post('/login', (req, res) => {
   // console.log(req.body);
   store
