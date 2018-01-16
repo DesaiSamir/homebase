@@ -10,7 +10,8 @@ export default class TableComponent extends Component{
     this.state = {
         data: [],
         columns: [],
-        rowCount: 25
+        rowCount: 25,
+        tableHight: window.innerHeight
     };
   }
 
@@ -21,7 +22,9 @@ export default class TableComponent extends Component{
             this.setState({ 
                 data: this.props.data, 
                 coloumns: cols,
-                rowCount: rowCount});
+                rowCount: rowCount,
+                tableHight: this.props.tableHight
+            });
         }
     }
 
@@ -32,7 +35,9 @@ export default class TableComponent extends Component{
             this.setState({ 
                 data: nextProps.data, 
                 coloumns: cols,
-                rowCount: rowCount });
+                rowCount: rowCount,
+                tableHight: nextProps.tableHight 
+            });
         }
     }
 
@@ -80,7 +85,8 @@ export default class TableComponent extends Component{
                     columns={this.state.coloumns} 
                     defaultPageSize={this.state.rowCount} 
                     className="-striped -highlight" 
-                    getTrProps={this.props.onRowClick} />
+                    getTrProps={this.props.onRowClick} 
+                    style={{height: this.props.tableHight}}/>
             </div>;
         }
         else{

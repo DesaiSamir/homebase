@@ -25,9 +25,9 @@ class Home extends Component{
     renderLoginForm(){
         console.log("Rendering Login Form");
         let loginForm = (
-            <form class="Login" id="Login" onSubmit={this.onSubmit}>
+            <form className="Login" id="Login" onSubmit={this.onSubmit}>
                 <h1>Login</h1>
-                <div class="form-input">
+                <div className="form-input">
                     <input type="text" id="username" ref="username" placeholder="username" />
                     <input type="password" id="password" ref="password" placeholder="password" />
                     <input type="submit" value="Login"/>
@@ -39,11 +39,7 @@ class Home extends Component{
     }
 
     render(){
-        console.log("Rendering Home");
-        // var content = document.getElementById('content');
-        return  <div className="content">
-            {this.renderLoginForm()}
-        </div>
+        return this.renderLoginForm()
     }
 }
 

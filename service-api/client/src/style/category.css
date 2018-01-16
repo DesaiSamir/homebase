@@ -1,12 +1,18 @@
-.category input {
-    margin: 5px;
-    width: 100%;
-}
+
 
 h1{
     margin: 0%;
 }
 
-.category .form-input {
+.category-input {
     display: flex;
+}
+
+.form-field {
+    margin: 5px;
+    width: 100%;
+}
+
+Category {
+    height: 80px;
 }

@@ -26,9 +26,9 @@ export default class Category extends Component {
     let categoryForm = (
       <form id="Category" onSubmit={this.onSubmit}>
             <h1>Category</h1>
-            <div className="form-input">
-                <input type="text" id="categoryName" placeholder="Category Name" />
-                <input type="submit" value="Add Category"/>
+            <div className="category-input">
+                <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
+                <input className="form-field" type="submit" value="Add Category"/>
             </div>
         </form>
     );
@@ -59,7 +59,7 @@ export default class Category extends Component {
     return (
       <div>
         {this.renderCategoryForm()}
-        <Table data={data}/>
+        <Table data={data} tableHight={window.innerHeight - 160}/>
       </div>
     )
   }
