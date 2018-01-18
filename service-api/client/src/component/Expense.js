@@ -110,7 +110,7 @@ export default class Expense extends Component {
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Date<span>*</span></p>
                         <span className="icon-case"><i className="material-icons">insert_invitation</i></span>
-                            <input type="date" id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
+                        <input type="date" id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
                     <div className="validation"></div>
                     </div> 
 
