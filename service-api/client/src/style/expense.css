@@ -1,0 +1,180 @@
+.expense-input{
+    display: flex;
+}
+
+.info p {
+    text-align:center;
+    color: #999;
+    text-transform:none;
+    font-weight:600;
+    font-size:15px;
+    margin-top:2px
+  }
+  
+  .info i {
+    color:#F6AA93;
+  }
+  .material-icons{
+      vertical-align: middle;
+  }
+  form h1 {
+    font-size: 18px;
+    background: #F6AA93 none repeat scroll 0% 0%;
+    color: rgb(255, 255, 255);
+    padding: 15px 5px;
+    border-radius: 0px 0px 5px 5px;
+    margin: auto;
+    text-shadow: none; 
+    text-align:center
+  }
+  
+  .categoryForm {
+    border-radius: 0px;
+    width:100%;
+    background-color: #FFFFFF;
+    overflow: hidden;
+    text-align: justify;
+  }
+  
+  p span {
+    color: #F00;
+  }
+  
+  p {
+    margin: 10px;
+    font-weight: 500;
+    line-height: 2;
+    color:#333;
+  }
+  
+  /* h1 {
+    text-align:center; 
+    color: #666;
+    text-shadow: 1px 1px 0px #FFF;
+    margin:50px 0px 0px 0px
+  } */
+
+  form input, form select {
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+    width: inherit;
+    height: 40px;
+    float: left;
+    padding: 0px 15px;
+  }
+  form select {
+    height: 42px;
+  }
+  
+  a {
+    text-decoration:inherit
+  }
+  
+  textarea {
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid #EEE;
+    margin: 0;
+    width: 75%;
+    height: 130px; 
+    float: left;
+    padding: 0px 15px;
+  }
+  
+  .form-group {
+    overflow: hidden;
+    clear: both;
+    margin-left: 20px;
+    width: 80%;
+  }
+  
+  .icon-case {
+    width: 35px;
+    float: left;
+    border-radius: 5px 0px 0px 5px;
+    background:#eeeeee;
+    height:42px;
+    position: relative;
+    text-align: center;
+    line-height:40px;
+    vertical-align: middle;
+  }
+
+  i {
+    color:#555;
+  }
+  
+  .expButtons{
+    background-color: rgb(21, 201, 126);
+    color: #FFF;
+    text-align: center;
+    border:0;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  .addExpense{
+    width: 100%;
+    padding: 0px 0px;
+    border-radius: 0px 0px 5px 5px;
+  } 
+  .cancelExpense{
+    background-color: rgb(230, 90, 47);
+    width: 50%;
+    padding: 10px 0px;
+    border-radius: 0px 0px 0px 5px;
+  } 
+  .saveExpense{
+    width: 50%;
+    padding: 10px 0px;
+    border-radius: 0px 0px 5px 0px;
+    float:right;
+  }
+
+  .bottomButtons{
+    width: 100%;
+    position:fixed;
+    bottom:0px;
+    display: flex;
+  }
+  
+  /* .leftcontact {
+    width:49.5%; 
+    float:left;
+    border-right: 1px dotted #CCC;
+    box-sizing: border-box;
+    padding: 0px 15px 0px 0px;
+  } */
+  
+  /* .rightcontact {
+    width:100%;
+    float:right;
+    box-sizing: border-box;
+    padding: 0px 0px 0px 15px;
+  } */
+  
+  .validation {
+    display:none;
+    margin: 0 0 10px;
+    font-weight:400;
+    font-size:13px;
+    color: #DE5959;
+  }
+  
+  #sendmessage {
+    border:1px solid #fff;
+    display:none;
+    text-align:center;
+    margin:10px 0;
+    font-weight:600;
+    margin-bottom:30px;
+    background-color: #EBF6E0;
+    color: #5F9025;
+    border: 1px solid #B3DC82;
+    padding: 13px 40px 13px 18px;
+    border-radius: 3px;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.03);
+  }
+  
+  #sendmessage.show,.show  {
+    display:block;
+  }

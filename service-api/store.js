@@ -35,6 +35,28 @@ module.exports = {
   getCategory (){
     var category = knex('category').select('categoryid','category')
     return category
+  },
+  removeCategory({ categoryid }){
+    knex('category').where('categoryid', categoryid).del()
+    .catch(function(error) {
+      console.error(error)
+      return false;
+    });
+    return true;
+  },
+  createExpense ({expense_date, title, categoryid, cost}){
+    return knex('expense').insert({
+      expense_date,
+      title,
+      categoryid,
+      cost
+    });
+  },
+  getExpense(){
+    return knex('expense')
+      .join('category','expense.categoryid', 'category.categoryid')
+      .select('expense_date', 'title', 'cost')
+      .orderBy('expense_date','desc');
   }
 }
 

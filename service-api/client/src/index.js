@@ -9,6 +9,7 @@ import App from './App'
 import Home from './component/Home'
 import About from './component/About';
 import Category from './component/Category';
+import Expense from './component/Expense';
 import registerServiceWorker from './service/registerServiceWorker';
 
 
@@ -17,6 +18,7 @@ const routes = <Router>
             <Route exact path="/" component={Home} />
             <Route path="/About" component={About} />
             <Route path="/Category" component={Category} />
+            <Route path="/Expense" component={Expense} />
         </App>
     </Router>;
 

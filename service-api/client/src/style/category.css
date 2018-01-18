@@ -16,3 +16,18 @@ h1{
 Category {
     height: 80px;
 }
+
+.addCategory{
+    background-color: rgb(21, 201, 126);
+    color: #FFF;
+    text-align: center;
+    border:0;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 0;
+    float:right;
+    height: 40px;
+    cursor: pointer;
+}

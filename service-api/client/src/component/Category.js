@@ -7,28 +7,31 @@ export default class Category extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {data: []};
+    this.state = {
+      data: [],
+      formHeight: 105
+    };
   }
 
   onSubmit(e){
     e.preventDefault();
-        console.log("Button Clicked!!")
-        const category = document.getElementById("categoryName").value;
-        requests.postData('/createCategory', { category })
-            .then(({ status }) => {
-            if (status === 200) {
-                window.location= "/Category";
-            }
-            })
+    console.log("Button Clicked!!")
+    const category = document.getElementById("categoryName").value;
+    requests.postData('/createCategory', { category })
+      .then(({ status }) => {
+        if (status === 200) {
+            window.location= "/Category";
+        }
+      })
   }
 
   renderCategoryForm(){
     let categoryForm = (
-      <form id="Category" onSubmit={this.onSubmit}>
+      <form id="Category" onSubmit={this.onSubmit} style={{height: this.state.formHeight}}>
             <h1>Category</h1>
             <div className="category-input">
                 <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-                <input className="form-field" type="submit" value="Add Category"/>
+                <input className="form-field addCategory" type="submit" value="Add Category"/>
             </div>
         </form>
     );
@@ -59,7 +62,7 @@ export default class Category extends Component {
     return (
       <div>
         {this.renderCategoryForm()}
-        <Table data={data} tableHight={window.innerHeight - 160}/>
+        <Table data={data} tableHight={window.innerHeight - this.state.formHeight - 50}/>
       </div>
     )
   }

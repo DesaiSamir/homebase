@@ -62,6 +62,27 @@ app.get('/category', (req, res) => {
     });
 })
 
+app.post('/createExpense', (req, res) => {
+  store
+    .createExpense({
+      expense_date: req.body.expense_date,
+      title: req.body.title,
+      categoryid: req.body.categoryid,
+      cost: req.body.cost
+    })
+    .then(() => res.sendStatus(200))
+})
+
+app.get('/expense', (req, res) => {
+  store.getExpense()
+    .then((expense) => {
+      res.status(200).json(expense);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+})
+
 app.post('/login', (req, res) => {
   // console.log(req.body);
   store

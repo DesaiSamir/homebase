@@ -15,7 +15,7 @@ class Home extends Component{
         requests.postData('/login', { username, password })
             .then(({ status }) => {
             if (status === 200) {
-                window.location= "/Category";
+                window.location= "/Expense";
             }
             else 
                 alert('login failed')
@@ -30,7 +30,7 @@ class Home extends Component{
                 <div className="form-input">
                     <input type="text" id="username" ref="username" placeholder="username" />
                     <input type="password" id="password" ref="password" placeholder="password" />
-                    <input type="submit" value="Login"/>
+                    <button type="submit" className="loginButton" value="Login">Login</button>
                 </div>
             </form>
         );

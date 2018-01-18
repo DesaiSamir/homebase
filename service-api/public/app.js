@@ -45,6 +45,32 @@ GetCategory.addEventListener('submit',(e)=>{
     })
 })
 
+const GetExpense = document.querySelector('.GetExpense')
+GetExpense.addEventListener('submit',(e)=>{
+  e.preventDefault()
+  var response = get('/expense');
+  get('/expense')
+    .then(function(res){
+      if (res.ok) {
+        res.json().then(function(data) {
+          console.log(data.entries);
+        });
+      } else {
+        console.log("Looks like the response wasn't perfect, got status", res.status);
+      }
+    })
+})
+const CreateExpense = document.querySelector('.CreateExpense')
+CreateExpense.addEventListener('submit', (e) => {
+  e.preventDefault()
+  const expense_date = CreateExpense.querySelector('.expense_date').value
+  const title = CreateExpense.querySelector('.title').value
+  const categoryid = CreateExpense.querySelector('.categoryid').value
+  const cost = CreateExpense.querySelector('.cost').value
+  // console.log(`createCategory: ${category} ` )
+  post('/createExpense', { expense_date, title, categoryid, cost })
+})
+
 function post (path, data) {
   console.log(data)
   return window.fetch(path, {

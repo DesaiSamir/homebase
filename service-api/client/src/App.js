@@ -3,11 +3,17 @@ import logo from './sd_logo.png';
 import './style/App.css';
 
 class App extends Component {
-
+  
   render() {
+    var contentHeight = window.innerHeight - 50 ;
+    
+    const { children } = this.props;
+    var childrenWithProps = React.Children.map(children, child =>
+      React.cloneElement(child, { contentHeight: contentHeight }));
+
     return (
       <div className="App" >
-        <header className="App-header" style={{height: 60}}>
+        <header className="App-header">
           <div className="app-logo">
             <img src={logo} alt="logo" />
           </div>
@@ -15,8 +21,8 @@ class App extends Component {
             Expense App
           </div>
         </header>
-        <div className="content" style={{height: window.innerHeight - 80}}>
-          {this.props.children}
+        <div ref="content" style={{height: contentHeight}}>
+          {childrenWithProps}
         </div>        
       </div>
     );

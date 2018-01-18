@@ -28,32 +28,46 @@
     </noscript>
     <div id="root">
         <form class="Login">
-            <h1>Login</h1>
-            <input type="text" class="username" placeholder="username">
-            <input type="password" class="password" placeholder="password">
-            <input type="submit" value="Login">
-          </form>
+          <h1>Login</h1>
+          <input type="text" class="username" placeholder="username">
+          <input type="password" class="password" placeholder="password">
+          <input type="submit" value="Login">
+        </form>
         <form class="CreateUser">
-            <h1>Create a new user</h1>
-            <input type="text" class="username" placeholder="username">
-            <input type="text" class="firstname" placeholder="firstname">
-            <input type="text" class="lastname" placeholder="lastname">
-            <input type="password" class="password" placeholder="password">
-            <input type="submit" value="Create user">
-          </form>
-          <form class="CreateCategory">
-            <h1>Category</h1>
-            <div class="form-input">
-                <input type="text" class="categoryName" placeholder="Category Name" />
-                <input type="submit" value="Add Category"/>
-            </div>
+          <h1>Create a new user</h1>
+          <input type="text" class="username" placeholder="username">
+          <input type="text" class="firstname" placeholder="firstname">
+          <input type="text" class="lastname" placeholder="lastname">
+          <input type="password" class="password" placeholder="password">
+          <input type="submit" value="Create user">
+        </form>
+        <form class="CreateCategory">
+          <h1>Category</h1>
+          <div class="form-input">
+              <input type="text" class="categoryName" placeholder="Category Name" />
+              <input type="submit" value="Add Category"/>
+          </div>
         </form>
         <form class="GetCategory" >
           <h1>Category</h1>
           <div class="form-input">
               <input type="submit" value="Get Category"/>
           </div>
-      </form>
+        </form>
+        <form class="CreateExpense">
+          <h1>Create a new Expense</h1>
+          <input type="date" class="expense_date" >
+          <input type="text" class="title" placeholder="title">
+          <input type="text" class="categoryid" placeholder="category id">
+          <input type="text" class="cost" placeholder="cost">
+          <input type="submit" value="Create Expense">
+        </form>
+        <form class="GetExpense" >
+          <h1>Expense</h1>
+          <div class="form-input">
+              <input type="submit" value="Get Expense"/>
+          </div>
+        </form>
           <script src="/app.js"></script>        
     </div>
     <!--
