@@ -17,11 +17,12 @@ export default class Expense extends Component {
     }
 
     componentDidMount() {
-        this.getExpense()
-        this.getCategory()        
-        var date = new Date();
-        var today = this.formatDate(new Date(date.setMonth(date.getMonth() - 1))); 
+        this.getExpense();
+        this.getCategory();
+        var today = this.formatDate(new Date()); 
         this.setState({today: today});
+        var expenseDate = document.getElementById("expenseDate");
+        expenseDate.value = today;
         // costInput[0].style.width = costInput[0].style.width - 85;
     }
 
@@ -109,7 +110,7 @@ export default class Expense extends Component {
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Date<span>*</span></p>
                         <span className="icon-case"><i className="material-icons">insert_invitation</i></span>
-                            <input type="date" value={this.state.today} id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
+                            <input type="date" id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
                     <div className="validation"></div>
                     </div> 
 
