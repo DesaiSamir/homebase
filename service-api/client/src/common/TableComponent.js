@@ -48,6 +48,7 @@ export default class TableComponent extends Component{
             cols.push({
                 Header: (item.endsWith('id')? 'id' : item),
                 accessor: item,
+                show: (item.endsWith('id')? false : true),
                 maxWidth: (item.endsWith('id') || item.endsWith('cost') ? 70 : 1000),
                 filterMethod: (filter, rows) => matchSorter(rows, filter.value, { keys: [item] }),
                 filterAll: true,

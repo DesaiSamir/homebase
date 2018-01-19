@@ -31,7 +31,7 @@ export default class Category extends Component {
 
   renderCategoryForm(){
     let categoryForm = (
-      <form id="Category" onSubmit={this.onSubmit} style={{height: this.state.formHeight}}>
+      <form id="Category" style={{height: this.state.formHeight}}>
             <h1>Category</h1>
             
         </form>
@@ -105,7 +105,7 @@ export default class Category extends Component {
           onRowClick={this.onRowClick.bind(this)}/>
         <div className="category-input">
           <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-          <input className="form-field addCategory" type="submit" value="Add Category"/>
+          <input className="form-field addCategory" type="submit" value="Add Category" onSubmit={this.onSubmit} />
         </div>
         {overlay}
       </div>
