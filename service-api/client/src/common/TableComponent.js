@@ -46,9 +46,9 @@ export default class TableComponent extends Component{
         let keys = Object.keys(data[0]);
         keys.map((item) => {
             cols.push({
-                Header: item,
+                Header: (item.endsWith('id')? 'id' : item),
                 accessor: item,
-                minWidth: 160,
+                maxWidth: (item.endsWith('id') || item.endsWith('cost') ? 70 : 1000),
                 filterMethod: (filter, rows) => matchSorter(rows, filter.value, { keys: [item] }),
                 filterAll: true,
                 Cell: row => (

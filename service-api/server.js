@@ -62,6 +62,14 @@ app.get('/category', (req, res) => {
     });
 })
 
+app.post('/removeCategory', (req, res) => {
+  store
+    .removeCategory({
+      categoryid: req.body.categoryid
+    })
+    .then(() => res.sendStatus(200))
+})
+
 app.post('/createExpense', (req, res) => {
   store
     .createExpense({
@@ -81,6 +89,14 @@ app.get('/expense', (req, res) => {
     .catch((error) => {
       res.status(500).json({ error });
     });
+})
+
+app.post('/removeExpense', (req, res) => {
+  store
+    .removeExpense({
+      expenseid: req.body.expenseid
+    })
+    .then(() => res.sendStatus(200))
 })
 
 app.post('/login', (req, res) => {

@@ -9,10 +9,11 @@ export default class Expense extends Component {
         super(props);
         this.state = {
             data: [],
-            formHeight: 80,
+            formHeight: 50,
             addExpense: false,
             today: "",
-            category: []
+            category: [],
+            rowInfo: null
         };
     }
 
@@ -79,7 +80,6 @@ export default class Expense extends Component {
     renderExpenseHeader(){
         return (<form  style={{height: this.state.formHeight}}>
                 <h1>Expense Data</h1>
-                <div className="addExpense expButtons" onClick={this.onLoadExpense}>Add Expense</div>
             </form>
         );
     }
@@ -188,19 +188,62 @@ export default class Expense extends Component {
             console.log("Looks like the response wasn't perfect, got status", res.status);
           }
         }.bind(this))
+    }
+
+    onRowClick(state, rowInfo, column, instance){
+        return {
+            onClick: e => {
+                this.setState({rowInfo: rowInfo});
+            }
+        }
+    }
+
+    removeRecord(expenseid){
+        var that = this
+        requests.postData('/removeExpense', { expenseid })
+          .then(({ status }) => {
+            if (status === 200) {
+              that.setState({rowInfo: null});
+              that.getExpense();
+            }
+          })
       }
+    
+    cancleRecord(){
+        this.setState({rowInfo: null});
+    }
+
+    loadEditRecordScreen(rowInfo){
+        var editRecord = (<div className="editRecordScreen">
+            <div className="categoryData">
+              ExpenseId: {rowInfo.original.expenseid}
+              <br/>
+              ExpenseName: {rowInfo.original.title}
+            </div>
+            <div className="categoryButtons">
+              <div className="cancelCategory cancelExpense expButtons" onClick={this.cancleRecord.bind(this)}>Cancel</div>
+              <div className="deleteCategory saveExpense expButtons" onClick={() => this.removeRecord(rowInfo.original.expenseid)}>Delete</div>
+            </div>
+          </div>);      
+          return editRecord;
+    }
 
     render() {
-        
+        var overlay = this.state.rowInfo ? this.loadEditRecordScreen(this.state.rowInfo) : null;
         return (
             <div>
                 <div id="expenseTable">
                     {this.renderExpenseHeader()}
-                    <Table data={this.state.data} tableHight={window.innerHeight - this.state.formHeight - 52}/>
+                    <Table 
+                        data={this.state.data} 
+                        tableHight={window.innerHeight - this.state.formHeight - 95}
+                        onRowClick={this.onRowClick.bind(this)}/>
                 </div>
                 <div id="addExpense" style={{display: 'none'}}>
                     {this.renderExpenseForm()}
                 </div>
+                <div className="addExpense expButtons" style={{height: 43}} onClick={this.onLoadExpense}>Add Expense</div>
+                {overlay}
             </div>
         )
     }

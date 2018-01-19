@@ -31,3 +31,27 @@ Category {
     height: 40px;
     cursor: pointer;
 }
+
+.editRecordScreen{
+    width: 100%;
+    position:fixed;
+    bottom:0px;
+    display: grid;
+}
+
+.categoryButtons{
+    width: 100%;
+    display: flex;
+}
+
+.categoryData{
+    font-size: 18px;
+    background: #F6AA93 none repeat scroll 0% 0%;
+    color: rgb(255, 255, 255);
+    padding: 15px 5px;
+    border-radius: 0px 0px 5px 5px;
+    margin: auto;
+    text-shadow: none;
+    text-align: center;
+    width: 100%
+}

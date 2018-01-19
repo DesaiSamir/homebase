@@ -37,12 +37,12 @@ module.exports = {
     return category
   },
   removeCategory({ categoryid }){
-    knex('category').where('categoryid', categoryid).del()
+    return knex('category').where('categoryid', categoryid)
+    .del()
     .catch(function(error) {
       console.error(error)
       return false;
     });
-    return true;
   },
   createExpense ({expense_date, title, categoryid, cost}){
     return knex('expense').insert({
@@ -52,12 +52,21 @@ module.exports = {
       cost
     });
   },
+  removeExpense({ expenseid }){
+    return knex('expense').where('expenseid', expenseid)
+    .del()
+    .catch(function(error) {
+      console.error(error)
+      return false;
+    });
+  },
   getExpense(){
     return knex('expense')
       .join('category','expense.categoryid', 'category.categoryid')
-      .select('expense_date', 'title', 'cost')
+      .select('expenseid','expense_date', 'title', 'cost')
       .orderBy('expense_date','desc');
   }
+  
 }
 
 function saltHashPassword ({

@@ -9,13 +9,17 @@ export default class Category extends Component {
     super(props);
     this.state = {
       data: [],
-      formHeight: 105
+      formHeight: 53,
+      rowInfo: null
     };
   }
 
+  componentDidMount(){
+    this.getCategory()
+  }
+  
   onSubmit(e){
     e.preventDefault();
-    console.log("Button Clicked!!")
     const category = document.getElementById("categoryName").value;
     requests.postData('/createCategory', { category })
       .then(({ status }) => {
@@ -29,10 +33,7 @@ export default class Category extends Component {
     let categoryForm = (
       <form id="Category" onSubmit={this.onSubmit} style={{height: this.state.formHeight}}>
             <h1>Category</h1>
-            <div className="category-input">
-                <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-                <input className="form-field addCategory" type="submit" value="Add Category"/>
-            </div>
+            
         </form>
     );
     return categoryForm;
@@ -53,16 +54,60 @@ export default class Category extends Component {
     }.bind(this))
   }
 
+  removeRecord(categoryid){
+    console.log(categoryid)
+    var that = this
+    requests.postData('/removeCategory', { categoryid })
+      .then(({ status }) => {
+        if (status === 200) {
+          that.setState({rowInfo: null});
+          that.getCategory();
+        }
+      })
+  }
+
+  cancleRecord(){
+    this.setState({rowInfo: null});
+  }
+
+  loadEditRecordScreen(rowInfo){
+    var editRecord = (<div className="editRecordScreen">
+        <div className="categoryData">
+          CategoryId: {rowInfo.original.categoryid}
+          <br/>
+          CategoryName: {rowInfo.original.category}
+        </div>
+        <div className="categoryButtons">
+          <div className="cancelCategory cancelExpense expButtons" onClick={this.cancleRecord.bind(this)}>Cancel</div>
+          <div className="deleteCategory saveExpense expButtons" onClick={() => this.removeRecord(rowInfo.original.categoryid)}>Delete</div>
+        </div>
+      </div>);      
+      return editRecord;
+  }
+
+  onRowClick(state, rowInfo, column, instance){
+    return {
+      onClick: e => {
+        this.setState({rowInfo: rowInfo});
+      }
+    }
+  }
 
   render() {
-    this.getCategory()
-    var data = {}
-    if(this.state)
-      data = this.state.data
+    var overlay = this.state.rowInfo ? this.loadEditRecordScreen(this.state.rowInfo) : null;
+
     return (
       <div>
         {this.renderCategoryForm()}
-        <Table data={data} tableHight={window.innerHeight - this.state.formHeight - 50}/>
+        <Table 
+          data={this.state.data} 
+          tableHight={window.innerHeight - this.state.formHeight - 105}
+          onRowClick={this.onRowClick.bind(this)}/>
+        <div className="category-input">
+          <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
+          <input className="form-field addCategory" type="submit" value="Add Category"/>
+        </div>
+        {overlay}
       </div>
     )
   }
