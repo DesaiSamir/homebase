@@ -9,7 +9,7 @@ export default class Expense extends Component {
         super(props);
         this.state = {
             data: [],
-            formHeight: 50,
+            tableHeight: 0,
             addExpense: false,
             today: "",
             category: [],
@@ -20,11 +20,14 @@ export default class Expense extends Component {
     componentDidMount() {
         this.getExpense();
         this.getCategory();
+        var appHeights = this.props.appHeights
         var today = this.formatDate(new Date()); 
-        this.setState({today: today});
+        this.setState({
+            today: today,
+            tableHeight: window.innerHeight - appHeights.tableHeight
+        });
         var expenseDate = document.getElementById("expenseDate");
         expenseDate.value = today;
-        // costInput[0].style.width = costInput[0].style.width - 85;
     }
 
     componentDidUpdate(){
@@ -78,7 +81,7 @@ export default class Expense extends Component {
     }
 
     renderExpenseHeader(){
-        return (<form  style={{height: this.state.formHeight}}>
+        return (<form  style={{height: this.props.appHeights.pageHeaderHeight}}>
                 <h1>Expense Data</h1>
             </form>
         );
@@ -102,10 +105,10 @@ export default class Expense extends Component {
         var formWidth = window.innerWidth - 40;
         var inputWidth = formWidth - 70;
         let expenseForm = (
-            <form className="categoryForm" onSubmit={this.onSubmit} style={{height: window.innerHeight - 50}}>
+            <form className="categoryForm" onSubmit={this.onSubmit}>
                 <h1>Expense Form</h1>
                 
-                <div className="contentform" style={{overflowY: 'auto', height: window.innerHeight - 146}}>
+                <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight}}>
                     <div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Date<span>*</span></p>
@@ -147,7 +150,7 @@ export default class Expense extends Component {
                         <div className="validation"></div>
                     </div>
                 </div>
-                <div className="bottomButtons">
+                <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
                     <div className="cancelExpense expButtons" onClick={this.onCancelExpense}>Cancel</div>
                     <button type="submit" className="saveExpense expButtons" >Save</button>
                 </div>
@@ -236,13 +239,13 @@ export default class Expense extends Component {
                     {this.renderExpenseHeader()}
                     <Table 
                         data={this.state.data} 
-                        tableHight={window.innerHeight - this.state.formHeight - 95}
+                        tableHight={this.state.tableHeight}
                         onRowClick={this.onRowClick.bind(this)}/>
                 </div>
                 <div id="addExpense" style={{display: 'none'}}>
                     {this.renderExpenseForm()}
                 </div>
-                <div className="addExpense expButtons" style={{height: 43}} onClick={this.onLoadExpense}>Add Expense</div>
+                <div className="addExpense expButtons" style={{height: this.props.appHeights.pageFooterHeight}} onClick={this.onLoadExpense}>Add Expense</div>
                 {overlay}
             </div>
         )

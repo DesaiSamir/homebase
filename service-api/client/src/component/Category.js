@@ -9,13 +9,18 @@ export default class Category extends Component {
     super(props);
     this.state = {
       data: [],
-      formHeight: 53,
+      tableHeight: 0,
       rowInfo: null
     };
   }
 
   componentDidMount(){
     this.getCategory()
+
+    var appHeights = this.props.appHeights
+    this.setState({
+      tableHeight: window.innerHeight - appHeights.tableHeight
+    })
   }
   
   onSubmit(e){
@@ -31,7 +36,7 @@ export default class Category extends Component {
 
   renderCategoryForm(){
     let categoryForm = (
-      <form id="Category" style={{height: this.state.formHeight}}>
+      <form id="Category" style={{height: this.props.appHeights.pageHeaderHeight}}>
             <h1>Category</h1>
             
         </form>
@@ -101,9 +106,9 @@ export default class Category extends Component {
         {this.renderCategoryForm()}
         <Table 
           data={this.state.data} 
-          tableHight={window.innerHeight - this.state.formHeight - 105}
+          tableHight={this.state.tableHeight}
           onRowClick={this.onRowClick.bind(this)}/>
-        <div className="category-input">
+        <div className="category-input" style={{height: this.props.appHeights.pageFooterHeight}}>
           <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
           <input className="form-field addCategory" type="submit" value="Add Category" onSubmit={this.onSubmit} />
         </div>

@@ -3,13 +3,13 @@ import requests from '../utils/requestHelper'
 import '../style/home.css';
 
 class Home extends Component{
-    // constructor(props){
-    //     super(props);
-    // }
+    constructor(props, contentHeight){
+        super(props);
+        // console.log(props)
+    }
 
     onSubmit(e){
         e.preventDefault();
-        console.log("Button Clicked!!")
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
         requests.postData('/login', { username, password })
@@ -23,7 +23,6 @@ class Home extends Component{
     }
 
     renderLoginForm(){
-        console.log("Rendering Login Form");
         let loginForm = (
             <form className="Login" id="Login" onSubmit={this.onSubmit}>
                 <h1>Login</h1>

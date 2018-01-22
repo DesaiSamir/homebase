@@ -1,0 +1,31 @@
+
+.sidebar{
+    position: absolute;
+    top: 40px;
+    left: -165px;
+    width: 200px;
+    /* transition: left .3s ease-in-out; */
+    background-color: rgb(2, 0, 0);
+    color: aqua;
+    visibility: hidden;
+    z-index: 1;
+}
+.sidebar-toggle {
+    position: relative;
+    top: 20%;
+  }
+.menu-title{
+    background-color: #650000
+}
+.menu-item {
+    font-size: .9em;
+    width:100%;
+    margin:0;
+    border-bottom:solid 1px rgb(129, 221, 233);
+    cursor:pointer;
+    color: aqua;
+}
+
+.sidebar.open {
+    visibility: visible;
+}

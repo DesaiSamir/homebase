@@ -114,7 +114,6 @@
   }
   .addExpense{
     width: 100%;
-    padding: 0px 0px;
     border-radius: 0px 0px 5px 5px;
   } 
   .cancelExpense{
