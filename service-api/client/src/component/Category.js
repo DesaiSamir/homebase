@@ -110,7 +110,7 @@ export default class Category extends Component {
           onRowClick={this.onRowClick.bind(this)}/>
         <div className="category-input" style={{height: this.props.appHeights.pageFooterHeight}}>
           <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-          <input className="form-field addCategory" type="submit" value="Add Category" onSubmit={this.onSubmit} />
+          <input className="form-field addCategory" type="submit" value="Add Category" onClick={this.onSubmit} />
         </div>
         {overlay}
       </div>
