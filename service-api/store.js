@@ -63,7 +63,7 @@ module.exports = {
   getExpense(){
     return knex('expense')
       .join('category','expense.categoryid', 'category.categoryid')
-      .select('expenseid','expense_date', 'title', 'cost')
+      .select('expenseid','expense_date', 'title', 'category', 'cost')
       .orderBy('expense_date','desc');
   }
   

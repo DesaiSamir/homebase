@@ -17,6 +17,9 @@
 .menu-title{
     background-color: #650000
 }
+.menu-item a{
+    color: white;
+}
 .menu-item {
     font-size: .9em;
     width:100%;
