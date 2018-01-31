@@ -54,10 +54,10 @@ export default class Expense extends Component {
 
     onSubmit(e){
         e.preventDefault();
-        console.log("Button Clicked!!")
         const expense_date = document.getElementById("expenseDate").value;
         const title = document.getElementById("title").value;
-        const categoryid = document.getElementById("categoryid").firstChild.getAttribute("data-id");
+        const categoryNode = document.getElementById("categoryid");
+        const categoryid = categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id");
         const cost = document.getElementById("cost").value;
         requests.postData('/createExpense', { expense_date, title, categoryid, cost })
         .then(({ status }) => {
