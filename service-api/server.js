@@ -33,6 +33,36 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json())
 
+app.post('/getHomebaseData', (req, res) => {
+  store.getHomebaseData({table_name: req.body.table_name})
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+})
+
+app.post('/removeRecord', (req, res) => {
+  store
+    .removeRecord({
+      table_name: req.body.table_name,
+      key_name: req.body.key_name,
+      key_value: req.body.key_value
+    })
+    .then(() => res.sendStatus(200))
+})
+
+app.post('/restoreRecord', (req, res) => {
+  store
+    .restoreRecord({
+      table_name: req.body.table_name,
+      key_name: req.body.key_name,
+      key_value: req.body.key_value
+    })
+    .then(() => res.sendStatus(200))
+})
+
 app.post('/createUser', (req, res) => {
   store
     .createUser({
@@ -52,24 +82,6 @@ app.post('/createCategory', (req, res) => {
     .then(() => res.sendStatus(200))
 })
 
-app.get('/category', (req, res) => {
-  store.getCategory()
-    .then((category) => {
-      res.status(200).json(category);
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-})
-
-app.post('/removeCategory', (req, res) => {
-  store
-    .removeCategory({
-      categoryid: req.body.categoryid
-    })
-    .then(() => res.sendStatus(200))
-})
-
 app.post('/createExpense', (req, res) => {
   store
     .createExpense({
@@ -81,33 +93,13 @@ app.post('/createExpense', (req, res) => {
     .then(() => res.sendStatus(200))
 })
 
-app.get('/expense', (req, res) => {
-  store.getExpense()
-    .then((expense) => {
-      res.status(200).json(expense);
-    })
-    .catch((error) => {
-      res.status(500).json({ error });
-    });
-})
-
-app.post('/removeExpense', (req, res) => {
-  store
-    .removeExpense({
-      expenseid: req.body.expenseid
-    })
-    .then(() => res.sendStatus(200))
-})
-
 app.post('/login', (req, res) => {
-  // console.log(req.body);
   store
     .authenticate({
       username: req.body.username,
       password: req.body.password
     })
     .then(({ success }) => {
-      // console.log("status to send: " + success)
       if (success) res.sendStatus(200)
       else res.sendStatus(401)
     })

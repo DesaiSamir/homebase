@@ -34,9 +34,9 @@ export default class Expense extends Component {
         var category = document.getElementById("categoryid");
         var options = ""
         this.state.category.forEach(cat => {
-            options += "<option data-id=" + cat.categoryid + ">" + cat.category + "</option>";
+            options += "<option data-id=" + cat.categoryid + ">" + cat.Category + "</option>";
         });
-
+        
         category.innerHTML = options;
     }
 
@@ -161,36 +161,13 @@ export default class Expense extends Component {
     }
 
     getExpense(){
-        
-        requests.getData('/expense')
-        .then(function(res) {
-        
-            if (res.ok) {
-                res.json().then(function(data) {
-                    data.forEach(row => {
-                        row.expense_date = this.formatDate(row.expense_date)
-                    });
-                    this.setState({ data: data });
-                }.bind(this));
-            } else {
-                console.log("Looks like the response wasn't perfect, got status", res.status);
-            }
-        }.bind(this))
+        const table_name = 'expense_view';
+        requests.getDataByTableName(table_name, this);
     }
 
     getCategory(){
-    
-        requests.getData('/category')
-        .then(function(res, that) {
-          
-          if (res.ok) {
-            res.json().then(function(data, that) {
-                this.setState({ category: data });
-            }.bind(this));
-          } else {
-            console.log("Looks like the response wasn't perfect, got status", res.status);
-          }
-        }.bind(this))
+        const table_name = 'category_view';
+        requests.getDataByTableName(table_name, this, "category");
     }
 
     onRowClick(state, rowInfo, column, instance){
@@ -202,14 +179,7 @@ export default class Expense extends Component {
     }
 
     removeRecord(expenseid){
-        var that = this
-        requests.postData('/removeExpense', { expenseid })
-          .then(({ status }) => {
-            if (status === 200) {
-              that.setState({rowInfo: null});
-              that.getExpense();
-            }
-          })
+        requests.removeRecord('expense', 'expenseid', expenseid, this, this.getExpense.bind(this))
       }
     
     cancleRecord(){

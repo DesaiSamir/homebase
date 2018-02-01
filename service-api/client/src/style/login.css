@@ -1,0 +1,24 @@
+.Login .form-input {
+    display: inline-grid;
+    width: 200px;
+}
+
+.Login input {
+    margin-top: 50px;
+}
+
+.loginButton{
+    background-color: rgb(21, 201, 126);
+    color: #FFF;
+    text-align: center;
+    border:0;
+    cursor: pointer;
+    font-size: 18px;
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 0px 0px 5px 0px;
+    float:right;
+    margin-top: 50px;
+    height: 40px;
+    cursor: pointer;
+}

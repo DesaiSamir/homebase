@@ -6,6 +6,7 @@ import {
     Route
   } from 'react-router-dom';
 import App from './App'
+import Login from './component/Login'
 import Home from './component/Home'
 import About from './component/About';
 import Category from './component/Category';
@@ -21,7 +22,8 @@ const appHeights = {
 
 const routes = <Router>
         <App appHeights={appHeights}>
-            <Route exact path="/" render={(props) => <Home {...props} appHeights={appHeights}/>} />
+            <Route exact path="/" render={(props) => <Login {...props} appHeights={appHeights}/>} />
+            <Route path="/Home" render={(props) => <Home {...props} appHeights={appHeights}/>} />
             <Route path="/About" render={(props) => <About {...props} appHeights={appHeights}/>} />
             <Route path="/Category" render={(props) => <Category {...props} appHeights={appHeights}/>} />
             <Route path="/Expense" render={(props) => <Expense {...props} appHeights={appHeights}/>} />

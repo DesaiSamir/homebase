@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import requests from '../utils/requestHelper'
-import '../style/home.css';
+import '../style/login.css';
 
-export default class Home extends Component{
+export default class Login extends Component{
     constructor(props, contentHeight){
         super(props);
         // console.log(props)
@@ -41,4 +41,5 @@ export default class Home extends Component{
         return this.renderLoginForm()
     }
 }
+
 

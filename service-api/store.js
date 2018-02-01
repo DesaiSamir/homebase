@@ -2,6 +2,23 @@ const crypto = require('crypto')
 const knex = require('knex')(require('./knexfile'))
 
 module.exports = {
+  getHomebaseData(table_name){
+    return knex(table_name)
+  },
+  removeRecord({ table_name, key_name, key_value }){
+    return knex.raw('call homebase.usp_update_table(?, ?, ?, 0)', [table_name, key_name, key_value])
+    .catch(function(error) {
+      console.error(error)
+      return false;
+    });
+  },
+  restoreRecord({ table_name, key_name, key_value }){
+    return knex.raw('call homebase.usp_update_table(?, ?, ?, 1)', [table_name, key_name, key_value])
+    .catch(function(error) {
+      console.error(error)
+      return false;
+    });
+  },
   createUser ({ firstname, lastname, password, username }) {
     console.log(`Add user: ${firstname} ${lastname} with username: ${username} and password: ${password}`)
     const { salt, hash } = saltHashPassword({ password })
@@ -32,18 +49,6 @@ module.exports = {
       category
     })
   },
-  getCategory (){
-    var category = knex('category').select('categoryid','category')
-    return category
-  },
-  removeCategory({ categoryid }){
-    return knex('category').where('categoryid', categoryid)
-    .del()
-    .catch(function(error) {
-      console.error(error)
-      return false;
-    });
-  },
   createExpense ({expense_date, title, categoryid, cost}){
     return knex('expense').insert({
       expense_date,
@@ -51,22 +56,7 @@ module.exports = {
       categoryid,
       cost
     });
-  },
-  removeExpense({ expenseid }){
-    return knex('expense').where('expenseid', expenseid)
-    .del()
-    .catch(function(error) {
-      console.error(error)
-      return false;
-    });
-  },
-  getExpense(){
-    return knex('expense')
-      .join('category','expense.categoryid', 'category.categoryid')
-      .select('expenseid','expense_date', 'title', 'category', 'cost')
-      .orderBy('expense_date','desc');
   }
-  
 }
 
 function saltHashPassword ({

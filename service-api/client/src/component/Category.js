@@ -45,30 +45,12 @@ export default class Category extends Component {
   }
 
   getCategory(){
-    
-    requests.getData('/category')
-    .then(function(res, that) {
-      
-      if (res.ok) {
-        res.json().then(function(data, that) {
-          this.setState({ data: data });
-        }.bind(this));
-      } else {
-        console.log("Looks like the response wasn't perfect, got status", res.status);
-      }
-    }.bind(this))
+    const table_name = 'category_view';
+    requests.getDataByTableName(table_name, this);
   }
 
   removeRecord(categoryid){
-    console.log(categoryid)
-    var that = this
-    requests.postData('/removeCategory', { categoryid })
-      .then(({ status }) => {
-        if (status === 200) {
-          that.setState({rowInfo: null});
-          that.getCategory();
-        }
-      })
+    requests.removeRecord('category', 'categoryid', categoryid, this, this.getCategory.bind(this))
   }
 
   cancleRecord(){
