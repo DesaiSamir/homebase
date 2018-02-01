@@ -87,7 +87,9 @@ export default class TableComponent extends Component{
                     defaultPageSize={this.state.rowCount} 
                     className="-striped -highlight" 
                     getTrProps={this.props.onRowClick} 
-                    style={{height: this.props.tableHight}}/>
+                    style={{height: this.props.tableHight}}
+                    showPageSizeOptions={false}
+                    />
             </div>;
         }
         else{
