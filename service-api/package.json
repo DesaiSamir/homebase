@@ -12,8 +12,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm run devserver\" \"npm run client\"",
-    "start:prod": "npm run prodserver",
+    "start:dev": "concurrently \"npm run devserver\" \"npm run client\"",
+    "start": "npm run prodserver",
     "prodserver": "NODE_ENV=production PORT=3000 node server.js",
     "devserver": "node server.js",
     "client": "node client.js"
