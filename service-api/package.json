@@ -12,12 +12,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "concurrently \"npm run devserver\" \"npm run client\"",
-    "start": "npm run prodserver",
+    "start": "concurrently \"npm run devserver\" \"npm run client\"",
+    "start:prod": "npm run prodserver",
     "prodserver": "NODE_ENV=production PORT=3000 node server.js",
     "devserver": "node server.js",
-    "client": "node client.js",
-    "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1"
+    "client": "node client.js"
   },
   "author": "",
   "license": "ISC",
