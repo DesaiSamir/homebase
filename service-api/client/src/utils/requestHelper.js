@@ -1,7 +1,7 @@
 
 
 export default {
-  getDataByTableName: function(table_name, that, objSet = ""){
+  getDataByTableName: function(table_name, that, callback){
     this.postData('/getHomebaseData', { table_name })
         .then(function(res) {      
           if (res.ok) {
@@ -10,8 +10,8 @@ export default {
                 if(row.Date)
                   row.Date = this.formatDate(row.Date)
               });
-              if(objSet === "category"){
-                that.setState({ category: data });
+              if(callback){
+                callback(data)
               } else {
                 that.setState({ data: data });
               }

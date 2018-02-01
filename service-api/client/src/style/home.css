@@ -1,0 +1,36 @@
+h1 {
+    font-size: 2em;
+    background: #F6AA93 none repeat scroll 0% 0%;
+    color: rgb(255, 255, 255);
+    padding: 5px 5px;
+    border-radius: 0;
+    margin: auto;
+    text-shadow: none; 
+    text-align:center;
+    height: 40px;
+  }
+  .page-buttons{
+    display: flex;    
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    height: 50px;
+    width: 100%;
+    background-color: cadetblue;    
+}
+
+.page-buttons div{
+    flex: 1 1 auto;
+    font-size: 1.5em;
+
+}
+
+.page-buttons .button a{
+    color: white;
+}
+
+.home-page-content{
+    background-color: beige;
+    display: flex;
+    flex-direction: column;
+}

@@ -40,7 +40,7 @@ class App extends Component {
           </div>
           <div className="menu" onClick={this.handleViewSidebar.bind(this)}><i className="material-icons">reorder</i>
             <Sidebar isOpen={this.state.sidebarOpen} toggleSidebar={this.handleViewSidebar.bind(this)} >
-              <Link to="/">Home</Link>
+              <Link to="/Home">Home</Link>
               <Link to="/Expense">Expenses</Link>
               <Link to="/Category">Category</Link>
               <Link to="/About">About Us</Link>

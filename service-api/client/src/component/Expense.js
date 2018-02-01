@@ -19,7 +19,7 @@ export default class Expense extends Component {
 
     componentDidMount() {
         this.getExpense();
-        this.getCategory();
+        requests.getDataByTableName("category_view", this, this.getCategory.bind(this));
         var appHeights = this.props.appHeights
         var today = this.formatDate(new Date()); 
         this.setState({
@@ -165,9 +165,8 @@ export default class Expense extends Component {
         requests.getDataByTableName(table_name, this);
     }
 
-    getCategory(){
-        const table_name = 'category_view';
-        requests.getDataByTableName(table_name, this, "category");
+    getCategory(data){
+        this.setState({category: data})
     }
 
     onRowClick(state, rowInfo, column, instance){
