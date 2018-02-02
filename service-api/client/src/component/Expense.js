@@ -190,7 +190,7 @@ export default class Expense extends Component {
             <div className="categoryData">
               ExpenseId: {rowInfo.original.expenseid}
               <br/>
-              ExpenseName: {rowInfo.original.title}
+              ExpenseName: {rowInfo.original.Title}
             </div>
             <div className="categoryButtons">
               <div className="cancelCategory cancelExpense expButtons" onClick={this.cancleRecord.bind(this)}>Cancel</div>
