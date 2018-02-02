@@ -108,7 +108,7 @@ export default class Expense extends Component {
             <form className="categoryForm" onSubmit={this.onSubmit}>
                 <h1>Expense Form</h1>
                 
-                <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight}}>
+                <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 3}}>
                     <div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Date<span>*</span></p>
