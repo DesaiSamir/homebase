@@ -59,8 +59,8 @@ export default class Expense extends Component {
         const expense_date = document.getElementById("expenseDate").value;
         const title = document.getElementById("title").value;
         const categoryNode = document.getElementById("categoryid");
-        const categoryid = categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id");
-        const cost = document.getElementById("cost").value;
+        const categoryid = parseInt(categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id"),0);
+        const cost = parseInt(document.getElementById("cost").value,0);
 
         var data =  {
             tableName: this.state.tableName,

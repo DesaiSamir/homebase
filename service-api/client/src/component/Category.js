@@ -62,7 +62,6 @@ export default class Category extends Component {
       }
     };
   requests.editRecord(data, this, this.getCategory.bind(this))
-    //requests.removeRecord('category', 'categoryid', categoryid, this, this.getCategory.bind(this))
   }
 
   cancleRecord(){
