@@ -6,7 +6,6 @@ module.exports = {
     return knex(table_name)
   },
   editRecord({ tableName, data }){
-    console.log(data);
     return knex.raw('call homebase.usp_edit_table_data(?)', [data])
     .catch(function(error) {
       console.error(error)

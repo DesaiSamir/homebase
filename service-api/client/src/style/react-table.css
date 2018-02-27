@@ -79,7 +79,7 @@
         }
 
         .ReactTable .rt-thead .rt-tr {
-            text-align: center
+            text-align: center;
         }
 
         .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
@@ -162,6 +162,7 @@
         flex-direction: column;
         overflow: auto;
         margin-bottom: 0;
+        text-align: start;
     }
 
         .ReactTable .rt-tbody .rt-tr-group {

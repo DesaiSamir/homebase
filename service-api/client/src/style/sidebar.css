@@ -26,7 +26,7 @@
     margin:0;
     border-bottom:solid 1px rgb(129, 221, 233);
     cursor:pointer;
-    color: aqua;
+    color: white;
 }
 
 .sidebar.open {

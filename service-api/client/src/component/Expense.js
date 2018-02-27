@@ -38,8 +38,9 @@ export default class Expense extends Component {
             this.state.category.forEach(cat => {
                 options += "<option data-id=" + cat.categoryid + ">" + cat.Category + "</option>";
             });
+        if(!this.state.rowInfo)
+            category.innerHTML = options;
         
-        category.innerHTML = options;
     }
 
     formatDate(date) {
@@ -56,28 +57,54 @@ export default class Expense extends Component {
 
     onSubmit(e){
         e.preventDefault();
+        const expenseid = document.getElementById("expenseId").value;
         const expense_date = document.getElementById("expenseDate").value;
         const title = document.getElementById("title").value;
         const categoryNode = document.getElementById("categoryid");
         const categoryid = parseInt(categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id"),0);
         const cost = parseInt(document.getElementById("cost").value,0);
-
+        var isactive = 0;
+        if(document.getElementById("isactive").checked){
+            isactive = 1;
+        }
         var data =  {
             tableName: this.state.tableName,
             expenseTable: {
-                expenseid: 0,
+                expenseid: expenseid,
                 categoryid: categoryid,
                 title: title,
                 expense_date: expense_date,
                 cost: cost,
-                isactive: 1
+                isactive: isactive
             }
           };
         requests.editRecord(data, this, this.getExpense.bind(this))
         this.onCancelExpense();
     }
 
-    onLoadExpense(){
+    onLoadExpense(rowInfo = null){
+        if(rowInfo.original){
+            document.getElementById("expenseId").value = rowInfo.original.expenseid;
+            document.getElementById("expenseDate").value = rowInfo.original.Date;
+            document.getElementById("title").value = rowInfo.original.Title;
+            document.getElementById("cost").value = rowInfo.original.Cost;
+            document.getElementById("isactive").checked = true;
+            var category = document.getElementById("categoryid");
+            var i = 0;
+            category.childNodes.forEach(node => {
+                if(rowInfo.original.Category.toLowerCase() === node.innerHTML.toLowerCase()){
+                    category.selectedIndex = i;
+                    category.value = rowInfo.original.Category;
+                }
+                i = i + 1;
+            });
+            
+        }else if(this){
+            document.getElementById("expenseId").value = 0;
+            document.getElementById("expenseDate").value = this.state.today;
+            document.getElementById("title").value = "";
+            document.getElementById("cost").value = 7;
+        }
         var addExpense = document.getElementById("addExpense");
         addExpense.style.display = "block";
         var expenseData = document.getElementById("expenseTable")
@@ -111,7 +138,13 @@ export default class Expense extends Component {
         costInput.value = val;
     }
 
-    renderExpenseForm(){
+    renderExpenseForm(rowInfo = null){
+
+        var expenseId = 0;
+        var cost = "7";
+        if(rowInfo){
+            expenseId = rowInfo.original.expenseid;
+        }
         var formWidth = window.innerWidth - 40;
         var inputWidth = formWidth - 70;
         let expenseForm = (
@@ -119,7 +152,12 @@ export default class Expense extends Component {
                 <h1>Expense Form</h1>
                 
                 <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 2}}>
-                    <div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+                    <div className="form-group" style={{width: formWidth}}>
+                        <p>Expense Id: <span>*</span></p>
+                        <span className="icon-case"><i className="material-icons">fingerprint</i></span>
+                        <input type="number" id="expenseId" value={expenseId} readOnly style={{width: inputWidth}}/>
+                    </div> 
+                    
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Date<span>*</span></p>
                         <span className="icon-case"><i className="material-icons">insert_invitation</i></span>
@@ -129,20 +167,20 @@ export default class Expense extends Component {
                     <div className="form-group" style={{width: formWidth}}>
                     <p>Expense Title <span>*</span></p>
                     <span className="icon-case"><i className="material-icons">keyboard</i></span>
-                        <input type="text" name="title" id="title" data-rule="required" style={{width: inputWidth}}/>
+                        <input type="textarea" name="title" id="title" style={{width: inputWidth}}/>
                     </div>
 
                     <div className="form-group" style={{width: formWidth}}>
                     <p>Category <span>*</span></p>
-                    <span className="icon-case"><i className="material-icons">dialpad</i></span>
+                    <span className="icon-case"><i className="material-icons">list</i></span>
                         <select id="categoryid" style={{width: inputWidth + 33}}/>
-                    </div>  
+                    </div>
 
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Cost <span>*</span></p> 
                         <div className="cost-group"> 
                             <span className="icon-case"><i className="material-icons">monetization_on</i></span>
-                            <input type="number" name="cost" id="cost" defaultValue="7" data-rule="maxlen:10" style={{borderRadius: 0, width: inputWidth - 70}}/>
+                            <input type="number" name="cost" id="cost" defaultValue={cost} data-rule="maxlen:10" style={{borderRadius: 0, width: inputWidth - 70}}/>
                         </div>
                         <div>
                             <span className="icon-case" style={{borderRadius: 0, cursor: 'pointer'}} onClick={this.increaseCounter}><i className="material-icons" >add_box</i></span>
@@ -154,6 +192,12 @@ export default class Expense extends Component {
                                                                 }} onClick={this.decreaseCounter}>
                                         <i className="material-icons">remove_circle</i></span>
                         </div>
+                    </div>
+
+                    <div className="form-group" style={{width: formWidth}}>
+                        <p>IsActive: </p>
+                        <span className="icon-case"><i className="material-icons">done</i></span>
+                        <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
                     </div>
                 </div>
                 <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
@@ -198,23 +242,8 @@ export default class Expense extends Component {
         this.setState({rowInfo: null});
     }
 
-    loadEditRecordScreen(rowInfo){
-        var editRecord = (<div className="editRecordScreen">
-            <div className="categoryData">
-              ExpenseId: {rowInfo.original.expenseid}
-              <br/>
-              ExpenseName: {rowInfo.original.Title}
-            </div>
-            <div className="categoryButtons">
-              <div className="cancelCategory cancelExpense expButtons" onClick={this.cancleRecord.bind(this)}>Cancel</div>
-              <div className="deleteCategory saveExpense expButtons" onClick={() => this.removeRecord(rowInfo.original.expenseid)}>Delete</div>
-            </div>
-          </div>);      
-          return editRecord;
-    }
-
     render() {
-        var overlay = this.state.rowInfo ? this.loadEditRecordScreen(this.state.rowInfo) : null;
+        var overlay = this.state.rowInfo ? this.onLoadExpense(this.state.rowInfo) : null;
         return (
             <div>
                 <div id="expenseTable">
@@ -225,9 +254,9 @@ export default class Expense extends Component {
                         onRowClick={this.onRowClick.bind(this)}/>
                 </div>
                 <div id="addExpense" style={{display: 'none'}}>
-                    {this.renderExpenseForm()}
+                    {this.renderExpenseForm(this.state.rowInfo)}
                 </div>
-                <div className="addExpense expButtons" style={{height: this.props.appHeights.pageFooterHeight}} onClick={this.onLoadExpense}>Add Expense</div>
+                <div className="addExpense expButtons" style={{height: this.props.appHeights.pageFooterHeight}} onClick={this.onLoadExpense.bind(this)}>Add Expense</div>
                 {overlay}
             </div>
         )

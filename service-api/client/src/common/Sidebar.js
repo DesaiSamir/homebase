@@ -16,7 +16,7 @@ export default class Sidebar extends Component {
         <div className="sidebar-toggle">
           <div className="menu-title">Menu Items</div>
           {this.props.children.map((item, index) => {
-            return <div key={index} className="menu-item">{item}</div>
+            return <div key={index} >{item}</div>
             })
           }
         </div>
