@@ -13,13 +13,14 @@ export default class Expense extends Component {
             addExpense: false,
             today: "",
             category: [],
-            rowInfo: null
+            rowInfo: null,
+            tableName: 'expenseTable'
         };
     }
 
     componentDidMount() {
-        this.getExpense();
         requests.getDataByTableName("category_view", this, this.getCategory.bind(this));
+        this.getExpense();
         var appHeights = this.props.appHeights
         var today = this.formatDate(new Date()); 
         this.setState({
@@ -33,9 +34,10 @@ export default class Expense extends Component {
     componentDidUpdate(){
         var category = document.getElementById("categoryid");
         var options = ""
-        this.state.category.forEach(cat => {
-            options += "<option data-id=" + cat.categoryid + ">" + cat.Category + "</option>";
-        });
+        if(this.state.category)
+            this.state.category.forEach(cat => {
+                options += "<option data-id=" + cat.categoryid + ">" + cat.Category + "</option>";
+            });
         
         category.innerHTML = options;
     }
@@ -59,12 +61,20 @@ export default class Expense extends Component {
         const categoryNode = document.getElementById("categoryid");
         const categoryid = categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id");
         const cost = document.getElementById("cost").value;
-        requests.postData('/createExpense', { expense_date, title, categoryid, cost })
-        .then(({ status }) => {
-            if (status === 200) {
-                window.location= "/Expense";
+
+        var data =  {
+            tableName: this.state.tableName,
+            expenseTable: {
+                expenseid: 0,
+                categoryid: categoryid,
+                title: title,
+                expense_date: expense_date,
+                cost: cost,
+                isactive: 1
             }
-        })
+          };
+        requests.editRecord(data, this, this.getExpense.bind(this))
+        this.onCancelExpense();
     }
 
     onLoadExpense(){
@@ -105,7 +115,7 @@ export default class Expense extends Component {
         var formWidth = window.innerWidth - 40;
         var inputWidth = formWidth - 70;
         let expenseForm = (
-            <form className="categoryForm" onSubmit={this.onSubmit}>
+            <form className="categoryForm" onSubmit={this.onSubmit.bind(this)}>
                 <h1>Expense Form</h1>
                 
                 <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 2}}>
@@ -114,21 +124,18 @@ export default class Expense extends Component {
                         <p>Expense Date<span>*</span></p>
                         <span className="icon-case"><i className="material-icons">insert_invitation</i></span>
                         <input type="date" id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
-                    <div className="validation"></div>
                     </div> 
 
                     <div className="form-group" style={{width: formWidth}}>
                     <p>Expense Title <span>*</span></p>
                     <span className="icon-case"><i className="material-icons">keyboard</i></span>
                         <input type="text" name="title" id="title" data-rule="required" style={{width: inputWidth}}/>
-                        <div className="validation"></div>
                     </div>
 
                     <div className="form-group" style={{width: formWidth}}>
                     <p>Category <span>*</span></p>
                     <span className="icon-case"><i className="material-icons">dialpad</i></span>
                         <select id="categoryid" style={{width: inputWidth + 33}}/>
-                        <div className="validation"></div>
                     </div>  
 
                     <div className="form-group" style={{width: formWidth}}>
@@ -147,7 +154,6 @@ export default class Expense extends Component {
                                                                 }} onClick={this.decreaseCounter}>
                                         <i className="material-icons">remove_circle</i></span>
                         </div>
-                        <div className="validation"></div>
                     </div>
                 </div>
                 <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
@@ -178,8 +184,15 @@ export default class Expense extends Component {
     }
 
     removeRecord(expenseid){
-        requests.removeRecord('expense', 'expenseid', expenseid, this, this.getExpense.bind(this))
-      }
+        var data =  {
+            tableName: this.state.tableName,
+            expenseTable: {
+                expenseid: expenseid,
+                isactive: 0
+            }
+          };
+        requests.editRecord(data, this, this.getExpense.bind(this))
+    }
     
     cancleRecord(){
         this.setState({rowInfo: null});

@@ -10,7 +10,8 @@ export default class Category extends Component {
     this.state = {
       data: [],
       tableHeight: 0,
-      rowInfo: null
+      rowInfo: null,
+      tableName: 'categoryTable'
     };
   }
 
@@ -26,12 +27,15 @@ export default class Category extends Component {
   onSubmit(e){
     e.preventDefault();
     const category = document.getElementById("categoryName").value;
-    requests.postData('/createCategory', { category })
-      .then(({ status }) => {
-        if (status === 200) {
-            window.location= "/Category";
+    var data =  {
+        tableName: this.state.tableName,
+        categoryTable: {
+          categoryid: 0,
+          category: category,
+          isactive: 1
         }
-      })
+      };
+    requests.editRecord(data, this, this.getCategory.bind(this))
   }
 
   renderCategoryForm(){
@@ -50,7 +54,15 @@ export default class Category extends Component {
   }
 
   removeRecord(categoryid){
-    requests.removeRecord('category', 'categoryid', categoryid, this, this.getCategory.bind(this))
+    var data =  {
+      tableName: this.state.tableName,
+      categoryTable: {
+        categoryid: categoryid,
+        isactive: 0
+      }
+    };
+  requests.editRecord(data, this, this.getCategory.bind(this))
+    //requests.removeRecord('category', 'categoryid', categoryid, this, this.getCategory.bind(this))
   }
 
   cancleRecord(){
@@ -92,7 +104,7 @@ export default class Category extends Component {
           onRowClick={this.onRowClick.bind(this)}/>
         <div className="category-input" style={{height: this.props.appHeights.pageFooterHeight}}>
           <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-          <input className="form-field addCategory" type="submit" value="Add Category" onClick={this.onSubmit} />
+          <input className="form-field addCategory" type="submit" value="Add Category" onClick={this.onSubmit.bind(this)} />
         </div>
         {overlay}
       </div>

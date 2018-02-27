@@ -43,25 +43,15 @@ app.post('/getHomebaseData', (req, res) => {
     });
 })
 
-app.post('/removeRecord', (req, res) => {
+app.post('/editRecord', (req, res) => {
+
   store
-    .removeRecord({
-      table_name: req.body.table_name,
-      key_name: req.body.key_name,
-      key_value: req.body.key_value
+    .editRecord({
+      data: req.body.data
     })
     .then(() => res.sendStatus(200))
 })
 
-app.post('/restoreRecord', (req, res) => {
-  store
-    .restoreRecord({
-      table_name: req.body.table_name,
-      key_name: req.body.key_name,
-      key_value: req.body.key_value
-    })
-    .then(() => res.sendStatus(200))
-})
 
 app.post('/createUser', (req, res) => {
   store
@@ -70,25 +60,6 @@ app.post('/createUser', (req, res) => {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       password: req.body.password
-    })
-    .then(() => res.sendStatus(200))
-})
-
-app.post('/createCategory', (req, res) => {
-  store
-    .createCategory({
-      category: req.body.category
-    })
-    .then(() => res.sendStatus(200))
-})
-
-app.post('/createExpense', (req, res) => {
-  store
-    .createExpense({
-      expense_date: req.body.expense_date,
-      title: req.body.title,
-      categoryid: req.body.categoryid,
-      cost: req.body.cost
     })
     .then(() => res.sendStatus(200))
 })

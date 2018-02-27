@@ -5,15 +5,9 @@ module.exports = {
   getHomebaseData(table_name){
     return knex(table_name)
   },
-  removeRecord({ table_name, key_name, key_value }){
-    return knex.raw('call homebase.usp_update_table(?, ?, ?, 0)', [table_name, key_name, key_value])
-    .catch(function(error) {
-      console.error(error)
-      return false;
-    });
-  },
-  restoreRecord({ table_name, key_name, key_value }){
-    return knex.raw('call homebase.usp_update_table(?, ?, ?, 1)', [table_name, key_name, key_value])
+  editRecord({ tableName, data }){
+    console.log(data);
+    return knex.raw('call homebase.usp_edit_table_data(?)', [data])
     .catch(function(error) {
       console.error(error)
       return false;
@@ -42,20 +36,6 @@ module.exports = {
         // console.log("hash: '" + hash + "' user: '" + user.encrypted_password + "'");
         return { success: hash === user.encrypted_password }
       })
-  },
-  createCategory ({ category }) {
-    console.log(`Add category: ${category}`)
-    return knex('category').insert({
-      category
-    })
-  },
-  createExpense ({expense_date, title, categoryid, cost}){
-    return knex('expense').insert({
-      expense_date,
-      title,
-      categoryid,
-      cost
-    });
   }
 }
 

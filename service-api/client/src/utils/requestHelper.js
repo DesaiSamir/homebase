@@ -13,13 +13,25 @@ export default {
               if(callback){
                 callback(data)
               } else {
-                that.setState({ data: data });
+                that.setState({ 
+                  data: data
+                });
               }
             }.bind(this));
           } else {
             console.log("Looks like the response wasn't perfect, got status", res.status);
           }
         }.bind(this))
+  },
+  editRecord: function(data, that, callback){ 
+    data = JSON.stringify(data);
+    this.postData('/editRecord', { data })
+        .then(({ status }) => {
+          if (status === 200) {
+            that.setState({rowInfo: null});
+            callback();
+          }
+        })
   },
   removeRecord: function(table_name, key_name, key_value, that, callback){    
     this.postData('/removeRecord', { table_name, key_name, key_value })

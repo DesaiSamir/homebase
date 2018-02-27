@@ -1,0 +1,17 @@
+{
+    "tableName": "expenseTable",
+    "expenseTable":
+    {
+        "expenseid": "1",
+        "expense_date": "2018-01-01",
+        "title": "Test update of title",
+        "categoryid": "1",
+        "cost": "7",
+        "isactive": "1"
+    },
+    "categoryTable":
+    {
+        "categoryid": "1",
+        "category": "Philly ECS"
+    }
+}

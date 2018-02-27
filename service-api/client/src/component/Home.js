@@ -20,7 +20,7 @@ export default class Home extends Component{
     }
 
     componentDidMount() {
-        requests.getDataByTableName("sum_category", this, this.getSumCategory.bind(this));
+        // requests.getDataByTableName("sum_category", this, this.getSumCategory.bind(this));
         requests.getDataByTableName("sum_category_by_year", this, this.getSumCategoryByYear.bind(this));
         requests.getDataByTableName("sum_category_by_month", this, this.getSumCategoryByMonth.bind(this));
         
@@ -48,14 +48,14 @@ export default class Home extends Component{
             <Tabs>
                 <TabList>
                     <Tab>CategorySum</Tab>
-                    <Tab>ByYear</Tab>
+                    {/* <Tab>ByYear</Tab> */}
                     <Tab>ByMonth</Tab>
                 </TabList>
-                <TabPanel>
+                {/* <TabPanel>
                     <Table 
                         data={this.state.sum_category} 
                         tableHight={this.state.tableHeight}/>
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel>
                     <Table 
                         data={this.state.sum_category_by_year} 
