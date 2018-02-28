@@ -36,7 +36,7 @@ export default class Expense extends Component {
         var options = ""
         if(this.state.category)
             this.state.category.forEach(cat => {
-                options += "<option data-id=" + cat.categoryid + ">" + cat.Category + "</option>";
+                options += "<option data-id=" + cat.categoryid + ">" + cat.CategoryName + "</option>";
             });
         if(!this.state.rowInfo)
             category.innerHTML = options;
@@ -201,8 +201,12 @@ export default class Expense extends Component {
                     </div>
                 </div>
                 <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
-                    <div className="cancelExpense expButtons" onClick={this.onCancelExpense}>Cancel</div>
-                    <button type="submit" className="saveExpense expButtons" >Save</button>
+                    <div className="cancelExpense expButtons" onClick={this.onCancelExpense}>
+                        <h2>Cancel</h2>
+                    </div>
+                    <button type="submit" className="saveExpense expButtons" >
+                        <h2>Save</h2>
+                    </button>
                 </div>
             </form> 
         );
@@ -227,21 +231,6 @@ export default class Expense extends Component {
         }
     }
 
-    removeRecord(expenseid){
-        var data =  {
-            tableName: this.state.tableName,
-            expenseTable: {
-                expenseid: expenseid,
-                isactive: 0
-            }
-          };
-        requests.editRecord(data, this, this.getExpense.bind(this))
-    }
-    
-    cancleRecord(){
-        this.setState({rowInfo: null});
-    }
-
     render() {
         var overlay = this.state.rowInfo ? this.onLoadExpense(this.state.rowInfo) : null;
         return (
@@ -252,11 +241,15 @@ export default class Expense extends Component {
                         data={this.state.data} 
                         tableHight={this.state.tableHeight}
                         onRowClick={this.onRowClick.bind(this)}/>
+                    <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
+                        <div className="addExpense expButtons"  onClick={this.onLoadExpense.bind(this)}>
+                            <h2>Add Expense</h2>
+                        </div>
+                    </div>
                 </div>
                 <div id="addExpense" style={{display: 'none'}}>
                     {this.renderExpenseForm(this.state.rowInfo)}
                 </div>
-                <div className="addExpense expButtons" style={{height: this.props.appHeights.pageFooterHeight}} onClick={this.onLoadExpense.bind(this)}>Add Expense</div>
                 {overlay}
             </div>
         )

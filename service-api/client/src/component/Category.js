@@ -26,61 +26,28 @@ export default class Category extends Component {
   
   onSubmit(e){
     e.preventDefault();
-    const category = document.getElementById("categoryName").value;
+    const categoryId = document.getElementById("categoryId").value;
+    const categoryName = document.getElementById("categoryName").value;
+    var isactive = 0;
+    if(document.getElementById("isactive").checked){
+        isactive = 1;
+    }
     var data =  {
         tableName: this.state.tableName,
         categoryTable: {
-          categoryid: 0,
-          category: category,
-          isactive: 1
+          categoryid: categoryId,
+          category: categoryName,
+          isactive: isactive
         }
       };
-    requests.editRecord(data, this, this.getCategory.bind(this))
+    requests.editRecord(data, this, this.getCategory.bind(this));
+    this.onCancelCategory();
   }
 
-  renderCategoryForm(){
-    let categoryForm = (
-      <form id="Category" style={{height: this.props.appHeights.pageHeaderHeight}}>
-            <h1>Category</h1>
-            
-        </form>
-    );
-    return categoryForm;
-  }
 
   getCategory(){
     const table_name = 'category_view';
     requests.getDataByTableName(table_name, this);
-  }
-
-  removeRecord(categoryid){
-    var data =  {
-      tableName: this.state.tableName,
-      categoryTable: {
-        categoryid: categoryid,
-        isactive: 0
-      }
-    };
-  requests.editRecord(data, this, this.getCategory.bind(this))
-  }
-
-  cancleRecord(){
-    this.setState({rowInfo: null});
-  }
-
-  loadEditRecordScreen(rowInfo){
-    var editRecord = (<div className="editRecordScreen">
-        <div className="categoryData">
-          CategoryId: {rowInfo.original.categoryid}
-          <br/>
-          CategoryName: {rowInfo.original.category}
-        </div>
-        <div className="categoryButtons">
-          <div className="cancelCategory cancelExpense expButtons" onClick={this.cancleRecord.bind(this)}>Cancel</div>
-          <div className="deleteCategory saveExpense expButtons" onClick={() => this.removeRecord(rowInfo.original.categoryid)}>Delete</div>
-        </div>
-      </div>);      
-      return editRecord;
   }
 
   onRowClick(state, rowInfo, column, instance){
@@ -90,20 +57,97 @@ export default class Category extends Component {
       }
     }
   }
+  onLoadCategory(rowInfo = null){
+    if(rowInfo.original){
+      document.getElementById("categoryId").value = rowInfo.original.categoryid;
+      document.getElementById("categoryName").value = rowInfo.original.CategoryName;
+      document.getElementById("isactive").checked = true;
+    }else if(this){
+      document.getElementById("categoryId").value = 0;
+      document.getElementById("categoryName").value = "";
+    }
+    var addExpense = document.getElementById("addCategory");
+    addExpense.style.display = "block";
+    var expenseData = document.getElementById("categoryTable")
+    expenseData.style.display = "none";
+  }
+  onCancelCategory(){
+    var addExpense = document.getElementById("addCategory");
+    addExpense.style.display = "none";
+    var expenseData = document.getElementById("categoryTable")
+    expenseData.style.display = "block";
+  }
 
+  renderCategoryForm(rowInfo = null){
+    var categoryId = 0;
+    if(rowInfo){
+      categoryId = rowInfo.original.categoryid;
+    }
+    var formWidth = window.innerWidth - 40;
+    var inputWidth = formWidth - 70;
+    let categoryForm = (
+      <form className="categoryForm" onSubmit={this.onSubmit.bind(this)}>
+          <h1>Category</h1>
+          
+          <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 3}}>
+              <div className="form-group" style={{width: formWidth}}>
+                  <p>Category Id: <span>*</span></p>
+                  <span className="icon-case"><i className="material-icons">fingerprint</i></span>
+                  <input type="number" id="categoryId" value={categoryId} readOnly style={{width: inputWidth}}/>
+              </div> 
+
+              <div className="form-group" style={{width: formWidth}}>
+              <p>Category Name <span>*</span></p>
+              <span className="icon-case"><i className="material-icons">keyboard</i></span>
+                  <input type="textarea" name="categoryName" id="categoryName" style={{width: inputWidth}}/>
+              </div>
+
+              <div className="form-group" style={{width: formWidth}}>
+                  <p>IsActive: </p>
+                  <span className="icon-case"><i className="material-icons">done</i></span>
+                  <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
+              </div>
+          </div>
+          <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
+              <div className="cancelExpense expButtons" onClick={this.onCancelCategory}>
+                <h2>Cancel</h2>
+              </div>
+              <button type="submit" className="saveExpense expButtons" >
+                <h2>Save</h2>
+              </button>
+          </div>
+      </form> 
+    );
+    return categoryForm;
+  }
+
+  renderCategoryHeader(){
+    let categoryForm = (
+      <form id="Category" style={{height: this.props.appHeights.pageHeaderHeight}}>
+            <h1>Category</h1>
+        </form>
+    );
+    return categoryForm;
+  }
   render() {
-    var overlay = this.state.rowInfo ? this.loadEditRecordScreen(this.state.rowInfo) : null;
+    var overlay = this.state.rowInfo ? this.onLoadCategory(this.state.rowInfo) : null;
 
     return (
       <div>
-        {this.renderCategoryForm()}
-        <Table 
-          data={this.state.data} 
-          tableHight={this.state.tableHeight}
-          onRowClick={this.onRowClick.bind(this)}/>
-        <div className="category-input" style={{height: this.props.appHeights.pageFooterHeight}}>
-          <input className="form-field" type="text" id="categoryName" placeholder="Category Name" />
-          <input className="form-field addCategory" type="submit" value="Add Category" onClick={this.onSubmit.bind(this)} />
+        <div id="categoryTable">
+          {this.renderCategoryHeader()}
+          <Table 
+            data={this.state.data} 
+            tableHight={this.state.tableHeight}
+            onRowClick={this.onRowClick.bind(this)}/>
+          <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
+          <div className="addExpense expButtons" onClick={this.onLoadCategory.bind(this)}>
+            <h2>Add Category</h2>
+          </div>
+        </div>
+        </div>
+        <div id="addCategory" style={{display: 'none'}}>
+          {this.renderCategoryForm(this.state.rowInfo)}
         </div>
         {overlay}
       </div>
