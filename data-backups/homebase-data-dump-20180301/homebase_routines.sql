@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `homebase` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `homebase`;
 -- MySQL dump 10.13  Distrib 5.7.20, for osx10.11 (x86_64)
 --
 -- Host: 108.52.189.121    Database: homebase
@@ -31,6 +29,44 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary table structure for view `category_dates_x`
+--
+
+DROP TABLE IF EXISTS `category_dates_x`;
+/*!50001 DROP VIEW IF EXISTS `category_dates_x`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `category_dates_x` AS SELECT 
+ 1 AS `CategoryName`,
+ 1 AS `lastDay`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `chart_view_yearly`
+--
+
+DROP TABLE IF EXISTS `chart_view_yearly`;
+/*!50001 DROP VIEW IF EXISTS `chart_view_yearly`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `chart_view_yearly` AS SELECT 
+ 1 AS `DataPoint`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `chart_view_monthly`
+--
+
+DROP TABLE IF EXISTS `chart_view_monthly`;
+/*!50001 DROP VIEW IF EXISTS `chart_view_monthly`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `chart_view_monthly` AS SELECT 
+ 1 AS `name`,
+ 1 AS `data`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary table structure for view `sum_category_by_year`
 --
 
@@ -40,7 +76,7 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `sum_category_by_year` AS SELECT 
  1 AS `Year`,
- 1 AS `Category`,
+ 1 AS `CategoryName`,
  1 AS `Total`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -54,7 +90,7 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `category_view` AS SELECT 
  1 AS `categoryid`,
- 1 AS `Category`*/;
+ 1 AS `CategoryName`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -82,9 +118,8 @@ DROP TABLE IF EXISTS `sum_category_by_month`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `sum_category_by_month` AS SELECT 
- 1 AS `Year`,
- 1 AS `Month`,
- 1 AS `Category`,
+ 1 AS `Year-Month`,
+ 1 AS `CategoryName`,
  1 AS `Total`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -107,6 +142,60 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `category_dates_x`
+--
+
+/*!50001 DROP VIEW IF EXISTS `category_dates_x`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%.%.%.%` SQL SECURITY DEFINER */
+/*!50001 VIEW `category_dates_x` AS select `c`.`CategoryName` AS `CategoryName`,`allDates`.`lastDay` AS `lastDay` from (((select last_day(concat(`y`.`yr`,'-',`d`.`number`,'-01')) AS `lastDay` from (((select 1 AS `number`) union select 2 AS `2` union select 3 AS `3` union select 4 AS `4` union select 5 AS `5` union select 6 AS `6` union select 7 AS `7` union select 8 AS `8` union select 9 AS `9` union select 10 AS `10` union select 11 AS `11` union select 12 AS `12`) `d` join (select 2018 AS `yr` union select 2019 AS `yr` union select 2020 AS `yr`) `y`))) `allDates` join (select `homebase`.`category`.`category` AS `CategoryName` from `homebase`.`category` where (`homebase`.`category`.`isactive` = 1)) `c`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `chart_view_yearly`
+--
+
+/*!50001 DROP VIEW IF EXISTS `chart_view_yearly`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%.%.%.%` SQL SECURITY DEFINER */
+/*!50001 VIEW `chart_view_yearly` AS select concat('["',`s`.`CategoryName`,'", ',`s`.`Total`,']') AS `DataPoint` from `sum_category_by_year` `s` where ((`s`.`Year` = year(now())) and (`s`.`CategoryName` <> 'Miles')) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `chart_view_monthly`
+--
+
+/*!50001 DROP VIEW IF EXISTS `chart_view_monthly`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`%.%.%.%` SQL SECURITY DEFINER */
+/*!50001 VIEW `chart_view_monthly` AS select `g`.`CategoryName` AS `name`,concat('{',group_concat(`g`.`DataPoint` separator ','),'}') AS `data` from (select `homebase`.`category`.`category` AS `CategoryName`,concat('"2018-01-01":',' 0') AS `DataPoint` from `homebase`.`category` where (`homebase`.`category`.`isactive` = 1) union select `c`.`CategoryName` AS `CategoryName`,concat('"',coalesce(last_day(concat(`s`.`Year-Month`,'-01')),`c`.`lastDay`),'": ',coalesce(`s`.`Total`,0)) AS `DataPoint` from (`homebase`.`category_dates_x` `c` left join `homebase`.`sum_category_by_month` `s` on(((`s`.`CategoryName` = `c`.`CategoryName`) and (last_day(concat(`s`.`Year-Month`,'-01')) = `c`.`lastDay`)))) where (year(`c`.`lastDay`) = year(now()))) `g` where (`g`.`CategoryName` <> 'Miles') group by `g`.`CategoryName` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `sum_category_by_year`
 --
 
@@ -119,7 +208,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `sum_category_by_year` AS select year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))) AS `Year`,`c`.`category` AS `Category`,sum(json_unquote(json_extract(`e`.`details`,'$.cost'))) AS `Total` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) group by year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))),`c`.`category` */;
+/*!50001 VIEW `sum_category_by_year` AS select year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))) AS `Year`,`c`.`category` AS `CategoryName`,sum(json_unquote(json_extract(`e`.`details`,'$.cost'))) AS `Total` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) group by year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))),`c`.`category` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -137,7 +226,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `category_view` AS select `c`.`categoryid` AS `categoryid`,`c`.`category` AS `Category` from `category` `c` where (`c`.`isactive` = 1) order by `c`.`category` */;
+/*!50001 VIEW `category_view` AS select `c`.`categoryid` AS `categoryid`,`c`.`category` AS `CategoryName` from `category` `c` where (`c`.`isactive` = 1) order by `c`.`category` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -173,7 +262,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `sum_category_by_month` AS select year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))) AS `Year`,month(json_unquote(json_extract(`e`.`details`,'$.expense_date'))) AS `Month`,`c`.`category` AS `Category`,sum(json_unquote(json_extract(`e`.`details`,'$.cost'))) AS `Total` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) group by year(json_unquote(json_extract(`e`.`details`,'$.expense_date'))),month(json_unquote(json_extract(`e`.`details`,'$.expense_date'))),`c`.`category` order by `Year` desc,`Month` desc,`c`.`category` */;
+/*!50001 VIEW `sum_category_by_month` AS select date_format(json_unquote(json_extract(`e`.`details`,'$.expense_date')),'%Y-%m') AS `Year-Month`,`c`.`category` AS `CategoryName`,sum(json_unquote(json_extract(`e`.`details`,'$.cost'))) AS `Total` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) group by date_format(json_unquote(json_extract(`e`.`details`,'$.expense_date')),'%Y-%m'),`c`.`category` order by `Year-Month` desc,`c`.`category` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -306,4 +395,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-27 16:05:35
+-- Dump completed on 2018-03-01 16:12:28

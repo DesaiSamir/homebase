@@ -15,7 +15,7 @@ export default class Login extends Component{
         requests.postData('/login', { username, password })
             .then(({ status }) => {
             if (status === 200) {
-                window.location= "/Expense";
+                window.location= "/Home";
             }
             else 
                 alert('login failed')

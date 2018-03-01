@@ -15,7 +15,7 @@ export default {
               }
             });
           } else {
-            console.log("Looks like the response wasn't perfect, got status", res.status);
+            console.log("Looks like the response wasn't perfect, got status: ", res.status);
           }
         })
   },
@@ -29,23 +29,15 @@ export default {
           }
         })
   },
-  removeRecord: function(table_name, key_name, key_value, that, callback){    
-    this.postData('/removeRecord', { table_name, key_name, key_value })
-        .then(({ status }) => {
-          if (status === 200) {
-            that.setState({rowInfo: null});
-            callback();
-          }
-        })
-  },
-  restoreRecord: function(table_name, key_name, key_value, that, callback){    
-    this.postData('/restoreRecord', { table_name, key_name, key_value })
-        .then(({ status }) => {
-          if (status === 200) {
-            that.setState({rowInfo: null});
-            callback();
-          }
-        })
+  postData: function(path, queryString = "", cb) {
+    return window.fetch(path, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(queryString)
+    });
   },
   formatDate: function(date) {
     var d = new Date(date),
@@ -57,24 +49,5 @@ export default {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
-  },
-  getData: function (path, queryString = "", cb) {
-    return window.fetch(path, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    });
-  },
-  postData: function(path, queryString = "", cb) {
-    return window.fetch(path, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(queryString)
-    });
   }
 }

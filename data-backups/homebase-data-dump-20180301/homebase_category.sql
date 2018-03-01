@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `homebase` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `homebase`;
 -- MySQL dump 10.13  Distrib 5.7.20, for osx10.11 (x86_64)
 --
 -- Host: 108.52.189.121    Database: homebase
@@ -18,29 +16,30 @@ USE `homebase`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `knex_migrations`
+-- Table structure for table `category`
 --
 
-DROP TABLE IF EXISTS `knex_migrations`;
+DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `knex_migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `batch` int(11) DEFAULT NULL,
-  `migration_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+CREATE TABLE `category` (
+  `categoryid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category` varchar(255) DEFAULT NULL,
+  `isactive` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`categoryid`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `knex_migrations`
+-- Dumping data for table `category`
 --
 
-LOCK TABLES `knex_migrations` WRITE;
-/*!40000 ALTER TABLE `knex_migrations` DISABLE KEYS */;
-INSERT INTO `knex_migrations` VALUES (1,'20180111140702_user.js',1,'2018-02-22 21:16:17'),(2,'20180111142418_encrypt_user_password.js',1,'2018-02-22 21:16:18'),(3,'20180113204059_category_table.js',1,'2018-02-22 21:16:18'),(4,'20180113204256_expense_table.js',1,'2018-02-22 21:16:18');
-/*!40000 ALTER TABLE `knex_migrations` ENABLE KEYS */;
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,'Seminars',1,'2018-01-14 05:51:32','2018-02-28 19:28:17'),(2,'BBS',0,'2018-01-14 05:51:35','2018-02-28 19:28:01'),(3,'Function',0,'2018-01-14 05:51:39','2018-03-01 19:54:09'),(4,'Team Meeting',0,'2018-01-15 05:08:17','2018-03-01 03:17:48'),(14,'Meals',1,'2018-02-01 14:33:36',NULL),(15,'Books',1,'2018-02-22 21:49:49','2018-02-28 19:28:44'),(16,'Tip',1,'2018-02-22 21:50:17',NULL),(17,'Miles',1,'2018-02-22 21:50:41',NULL);
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-27 16:05:34
+-- Dump completed on 2018-03-01 16:12:24

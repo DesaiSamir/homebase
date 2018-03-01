@@ -16,29 +16,25 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `knex_migrations`
+-- Table structure for table `knex_migrations_lock`
 --
 
-DROP TABLE IF EXISTS `knex_migrations`;
+DROP TABLE IF EXISTS `knex_migrations_lock`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `knex_migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `batch` int(11) DEFAULT NULL,
-  `migration_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+CREATE TABLE `knex_migrations_lock` (
+  `is_locked` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `knex_migrations`
+-- Dumping data for table `knex_migrations_lock`
 --
 
-LOCK TABLES `knex_migrations` WRITE;
-/*!40000 ALTER TABLE `knex_migrations` DISABLE KEYS */;
-INSERT INTO `knex_migrations` VALUES (1,'20180111140702_user.js',1,'2018-02-22 21:16:17'),(2,'20180111142418_encrypt_user_password.js',1,'2018-02-22 21:16:18'),(3,'20180113204059_category_table.js',1,'2018-02-22 21:16:18'),(4,'20180113204256_expense_table.js',1,'2018-02-22 21:16:18');
-/*!40000 ALTER TABLE `knex_migrations` ENABLE KEYS */;
+LOCK TABLES `knex_migrations_lock` WRITE;
+/*!40000 ALTER TABLE `knex_migrations_lock` DISABLE KEYS */;
+INSERT INTO `knex_migrations_lock` VALUES (0);
+/*!40000 ALTER TABLE `knex_migrations_lock` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +46,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-28 14:51:23
+-- Dump completed on 2018-03-01 16:12:26

@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `homebase` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `homebase`;
 -- MySQL dump 10.13  Distrib 5.7.20, for osx10.11 (x86_64)
 --
 -- Host: 108.52.189.121    Database: homebase
@@ -18,30 +16,32 @@ USE `homebase`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `category`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category` (
-  `categoryid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `category` varchar(255) DEFAULT NULL,
-  `isactive` bit(1) DEFAULT b'1',
+CREATE TABLE `user` (
+  `userid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `firstname` varchar(255) DEFAULT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`categoryid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+  `salt` varchar(255) NOT NULL,
+  `encrypted_password` varchar(255) NOT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'ECS','','2018-01-14 05:51:32',NULL),(2,'BBS','','2018-01-14 05:51:35',NULL),(3,'Function','','2018-01-14 05:51:39',NULL),(4,'Team Meeting','','2018-01-15 05:08:17',NULL),(14,'Meals','','2018-02-01 14:33:36',NULL),(15,'BOM','','2018-02-22 21:49:49',NULL),(16,'Tip','','2018-02-22 21:50:17',NULL),(17,'Miles','','2018-02-22 21:50:41',NULL);
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-27 16:05:34
+-- Dump completed on 2018-03-01 16:12:26
