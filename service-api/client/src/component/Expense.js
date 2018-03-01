@@ -22,7 +22,7 @@ export default class Expense extends Component {
         requests.getDataByTableName("category_view", this, this.getCategory.bind(this));
         this.getExpense();
         var appHeights = this.props.appHeights
-        var today = this.formatDate(new Date()); 
+        var today = requests.formatDate(new Date()); 
         this.setState({
             today: today,
             tableHeight: window.innerHeight - appHeights.tableHeight + 1
@@ -41,18 +41,6 @@ export default class Expense extends Component {
         if(!this.state.rowInfo)
             category.innerHTML = options;
         
-    }
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
-
-        return [year, month, day].join('-');
     }
 
     onSubmit(e){

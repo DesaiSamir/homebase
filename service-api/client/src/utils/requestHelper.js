@@ -6,10 +6,6 @@ export default {
         .then(function(res) {      
           if (res.ok) {
             res.json().then(function(data) {
-              data.forEach(row => {
-                if(row.Date)
-                  row.Date = this.formatDate(row.Date)
-              });
               if(callback){
                 callback(data)
               } else {
@@ -17,11 +13,11 @@ export default {
                   data: data
                 });
               }
-            }.bind(this));
+            });
           } else {
             console.log("Looks like the response wasn't perfect, got status", res.status);
           }
-        }.bind(this))
+        })
   },
   editRecord: function(data, that, callback){ 
     data = JSON.stringify(data);
