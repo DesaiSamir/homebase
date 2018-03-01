@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { LineChart, PieChart } from 'react-chartkick';
 import Table from '../common/TableComponent';
 import requests from '../utils/requestHelper';
 import '../style/home.css';
@@ -15,14 +16,17 @@ export default class Home extends Component{
             sum_category: [],
             sum_category_by_year:[],
             sum_category_by_month:[],
+            chart_data_by_month:[],
+            chart_data_by_year:[],
             tableHeight: 0
         };
     }
 
     componentDidMount() {
-        // requests.getDataByTableName("sum_category", this, this.getSumCategory.bind(this));
         requests.getDataByTableName("sum_category_by_year", this, this.getSumCategoryByYear.bind(this));
         requests.getDataByTableName("sum_category_by_month", this, this.getSumCategoryByMonth.bind(this));
+        requests.getDataByTableName("chart_view_monthly", this, this.getMonthlyChartData.bind(this));
+        requests.getDataByTableName("chart_view_yearly", this, this.getYearlyChartData.bind(this));
         
         var appHeights = this.props.appHeights
         
@@ -43,28 +47,65 @@ export default class Home extends Component{
         this.setState({sum_category_by_month: data})
     }
 
+    getMonthlyChartData(data){
+        data.forEach(item => {
+            item.data = JSON.parse(item.data);
+        });
+        this.setState({chart_data_by_month: data})
+    }
+
+    getYearlyChartData(data){
+        var chartData = []
+
+        data.forEach(item => {
+            chartData.push(JSON.parse(item.DataPoint))
+        });
+        this.setState({chart_data_by_year: chartData})
+    }
+
+    renderTabByMonth(){
+
+        var chartHeight = this.state.tableHeight / 2;
+
+        let tabContent = (
+            <div>
+                <LineChart data={this.state.chart_data_by_month} width="100%" height={chartHeight}/>
+                <Table 
+                    data={this.state.sum_category_by_month} 
+                    tableHight={chartHeight}/>
+            </div>
+        );
+
+        return tabContent;
+    }
+
+    renderTabByYear(){
+        var chartHeight = this.state.tableHeight / 2;
+
+        let tabContent = (
+            <div>
+                <PieChart data={this.state.chart_data_by_year} width="100%" height={chartHeight}/>
+                <Table 
+                    data={this.state.sum_category_by_year} 
+                    tableHight={chartHeight}/>
+            </div>
+        );
+
+        return tabContent;
+    }
+
     renderTabs(){
         let tabs = (
             <Tabs>
                 <TabList>
-                    <Tab>CategorySum</Tab>
-                    {/* <Tab>ByYear</Tab> */}
-                    <Tab>ByMonth</Tab>
+                    <Tab>Yearly</Tab>
+                    <Tab>Monthly</Tab>
                 </TabList>
-                {/* <TabPanel>
-                    <Table 
-                        data={this.state.sum_category} 
-                        tableHight={this.state.tableHeight}/>
-                </TabPanel> */}
                 <TabPanel>
-                    <Table 
-                        data={this.state.sum_category_by_year} 
-                        tableHight={this.state.tableHeight}/>
+                    {this.renderTabByYear()}
                 </TabPanel>
                 <TabPanel>
-                    <Table 
-                        data={this.state.sum_category_by_month} 
-                        tableHight={this.state.tableHeight}/>
+                    {this.renderTabByMonth()}
                 </TabPanel>
             </Tabs>
         );
