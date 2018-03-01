@@ -18,7 +18,8 @@ export default class Home extends Component{
             sum_category_by_month:[],
             chart_data_by_month:[],
             chart_data_by_year:[],
-            tableHeight: 0
+            tableHeight: 0,
+            chartHeight: 0
         };
     }
 
@@ -29,9 +30,11 @@ export default class Home extends Component{
         requests.getDataByTableName("chart_view_yearly", this, this.getYearlyChartData.bind(this));
         
         var appHeights = this.props.appHeights
-        
+        var tableHeight = window.innerHeight - appHeights.tableHeight - 35;
+        var chartHeight = tableHeight * 0.40;
         this.setState({
-            tableHeight: window.innerHeight - appHeights.tableHeight - 35
+            tableHeight: tableHeight - chartHeight,
+            chartHeight: chartHeight
         });
     }
 
@@ -65,14 +68,15 @@ export default class Home extends Component{
 
     renderTabByMonth(){
 
-        var chartHeight = this.state.tableHeight / 2;
-
         let tabContent = (
             <div>
-                <LineChart data={this.state.chart_data_by_month} width="100%" height={chartHeight}/>
+                <LineChart 
+                    data={this.state.chart_data_by_month}
+                    prefix="$" 
+                    height={this.state.chartHeight}/>
                 <Table 
                     data={this.state.sum_category_by_month} 
-                    tableHight={chartHeight}/>
+                    tableHight={this.state.tableHeight}/>
             </div>
         );
 
@@ -80,14 +84,16 @@ export default class Home extends Component{
     }
 
     renderTabByYear(){
-        var chartHeight = this.state.tableHeight / 2;
 
         let tabContent = (
             <div>
-                <PieChart data={this.state.chart_data_by_year} width="100%" height={chartHeight}/>
+                <PieChart 
+                    data={this.state.chart_data_by_year}
+                    prefix="$"
+                    height={this.state.chartHeight}/>
                 <Table 
                     data={this.state.sum_category_by_year} 
-                    tableHight={chartHeight}/>
+                    tableHight={this.state.tableHeight}/>
             </div>
         );
 
