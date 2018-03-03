@@ -99,7 +99,7 @@ export default class Home extends Component{
                         backgroundColor: this.state.backgroundColor[i],
                         borderColor: this.state.backgroundColor[i],
                         fill: item.fill,
-                        pointRadius: 5,
+                        pointRadius: 2,
                         borderWidth: 3,
                         yAxisID: item.yAxisID
                     })
