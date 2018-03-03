@@ -40,7 +40,7 @@ export default class Home extends Component{
         
         var appHeights = this.props.appHeights
         var tableHeight = window.innerHeight - appHeights.tableHeight - 35;
-        var chartHeight = tableHeight * 0.40;
+        var chartHeight = tableHeight * 0.50;
         this.setState({
             tableHeight: tableHeight - chartHeight,
             chartHeight: chartHeight
