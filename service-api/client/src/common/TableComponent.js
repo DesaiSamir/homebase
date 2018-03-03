@@ -82,7 +82,7 @@ export default class TableComponent extends Component{
                 <div id="loadingImg" className="hide"></div>
                 <ReactTable 
                     data={this.state.data} 
-                    filterable
+                    filterable={(typeof this.props.filterable === 'undefined') ? true : this.props.filtertable}
                     defaultFilterMethod={(filter, row) => String(row[filter.id]) === filter.value}
                     columns={this.state.coloumns} 
                     defaultPageSize={this.state.rowCount} 
