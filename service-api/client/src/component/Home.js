@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {Line, Pie} from 'react-chartjs-2';
+import {defineSwipe, Swipeable} from 'react-touch';
 import Table from '../common/TableComponent';
 import requests from '../utils/requestHelper';
 import '../style/home.css';
@@ -20,6 +21,8 @@ export default class Home extends Component{
             chart_data_by_year:[],
             tableHeight: 0,
             chartHeight: 0,
+            tabIndex: 0,
+            totalTabs: 2,
             backgroundColor:[
                 'rgba(255, 99, 132, 0.6)',
                 'rgba(54, 162, 235, 0.6)',
@@ -240,9 +243,35 @@ export default class Home extends Component{
         return tabContent;
     }
 
+    _onSwipe(increment) {
+        var tabIndex = this.state.tabIndex;
+        var totalTabs = this.state.totalTabs - 1;
+
+        if((tabIndex + increment) > totalTabs){
+            tabIndex = 0;
+        } else if((tabIndex + increment) < 0){
+            tabIndex = totalTabs;
+        } else {
+            tabIndex = tabIndex + increment;
+        }
+
+        this.setState({tabIndex: tabIndex});
+    }
+
+    renderSwipeTabs(){
+        const swipe = defineSwipe({swipeDistance: 50});
+
+        let swipeTabs = (
+            <Swipeable config={swipe} onSwipeLeft={() => this._onSwipe(1)} onSwipeRight={() => this._onSwipe(-1)}>
+                {this.renderTabs()}
+            </Swipeable>
+        );
+        return swipeTabs;
+    }
+
     renderTabs(){
         let tabs = (
-            <Tabs>
+            <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
                 <TabList>
                     <Tab>Yearly</Tab>
                     <Tab>Monthly</Tab>
@@ -271,7 +300,7 @@ export default class Home extends Component{
                 </div>
                 <div className="home-page-content" style={{height: bodyHeight}}>
                     <div className="page-content">
-                    {this.renderTabs()}
+                    {this.renderSwipeTabs()}
                     </div>
                 </div>
             </div>

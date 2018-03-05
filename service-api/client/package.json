@@ -6,7 +6,6 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
-    "chartkick": "^2.3.3",
     "history": "^4.7.2",
     "match-sorter": "^2.2.0",
     "react": "^16.2.0",
@@ -14,7 +13,6 @@
     "react-addons-transition-group": "^15.6.0",
     "react-bootstrap-table": "^3.1.2",
     "react-chartjs-2": "^2.7.0",
-    "react-chartkick": "^0.1.6",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.3",
     "react-router": "^4.1.1",
@@ -23,6 +21,7 @@
     "react-table": "^6.7.5",
     "react-tabs": "^2.1.1",
     "react-transition-group": "^1.2.0",
+    "react-touch": "^0.4.3",
     "reactstrap": "^4.8.0",
     "redux": "^3.6.0",
     "redux-saga": "^0.15.4"
