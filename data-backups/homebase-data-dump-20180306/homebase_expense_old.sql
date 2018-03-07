@@ -1,0 +1,57 @@
+-- MySQL dump 10.13  Distrib 5.7.21, for macos10.13 (x86_64)
+--
+-- Host: 108.52.189.121    Database: homebase
+-- ------------------------------------------------------
+-- Server version	5.7.21-1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `expense_old`
+--
+
+DROP TABLE IF EXISTS `expense_old`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `expense_old` (
+  `expenseid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `expense_date` timestamp NULL DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `categoryid` varchar(255) DEFAULT NULL,
+  `cost` decimal(8,2) DEFAULT NULL,
+  `isactive` bit(1) DEFAULT b'1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`expenseid`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expense_old`
+--
+
+LOCK TABLES `expense_old` WRITE;
+/*!40000 ALTER TABLE `expense_old` DISABLE KEYS */;
+INSERT INTO `expense_old` VALUES (11,'2018-01-01 05:00:00','BOM: Art Of Productivity','15',17.00,'','2018-02-22 21:52:30',NULL),(12,'2018-01-02 05:00:00','Philly ECS ','1',7.00,'','2018-02-22 21:53:16',NULL),(13,'2018-01-02 05:00:00','ECS Miles ','17',30.00,'','2018-02-22 21:53:47',NULL),(14,'2018-01-05 05:00:00','Ohri PASE ','17',130.00,'','2018-02-22 21:55:04',NULL),(15,'2018-01-09 05:00:00','Philly ECS ','1',7.00,'','2018-02-22 21:55:36',NULL),(16,'2018-01-09 05:00:00','ECS Miles ','17',30.00,'','2018-02-22 21:56:01',NULL),(17,'2018-01-14 05:00:00','Kumar Team Meeting','17',130.00,'','2018-02-22 21:57:16',NULL),(18,'2018-02-01 05:00:00','BOM: Everyone communicates but free connects','15',22.00,'','2018-02-22 21:58:27',NULL),(19,'2018-01-20 05:00:00','Tip @Marriot','16',10.00,'','2018-02-22 21:59:15',NULL),(20,'2018-01-23 05:00:00','Philly ECS','1',7.00,'','2018-02-22 21:59:53',NULL),(21,'2018-01-23 05:00:00','ECS Miles','17',30.00,'','2018-02-22 22:00:15',NULL),(22,'2018-01-26 05:00:00','Sandilya PASE ','17',130.00,'','2018-02-22 22:01:21',NULL),(23,'2018-01-30 05:00:00','Philly ECS ','1',7.00,'','2018-02-22 22:02:04',NULL),(24,'2018-01-30 05:00:00','ECS Miles ','17',30.00,'','2018-02-22 22:02:33',NULL),(25,'2018-02-02 05:00:00','Ohri PASE','17',130.00,'','2018-02-22 22:04:05',NULL),(26,'2018-02-09 05:00:00','Sandilya PASE ','17',130.00,'','2018-02-22 22:04:39',NULL),(27,'2018-02-17 05:00:00','BBS: Nanda & Sangeeta','2',40.00,'','2018-02-22 22:05:13',NULL),(28,'2018-02-17 05:00:00','BBS Miles','17',150.00,'','2018-02-22 22:05:33',NULL),(29,'2018-02-06 05:00:00','Philly ECS ','1',7.00,'','2018-02-22 22:06:09',NULL),(30,'2018-02-06 05:00:00','ECS Miles ','17',30.00,'','2018-02-22 22:06:28',NULL),(31,'2018-02-13 05:00:00','Philly ECS','1',7.00,'','2018-02-22 22:07:04',NULL),(32,'2018-02-13 05:00:00','ECS Miles','17',30.00,'','2018-02-22 22:07:22',NULL),(33,'2018-02-20 05:00:00','Philly ECS','1',7.00,'','2018-02-22 22:07:40',NULL),(34,'2018-02-20 05:00:00','ECS Miles ','17',30.00,'','2018-02-22 22:07:58',NULL),(35,'2018-01-21 05:00:00','Dinner @ Genghis Grill','14',38.00,'','2018-02-22 22:12:18',NULL),(36,'2018-01-30 05:00:00','Dinner @ Applebees ','14',22.00,'','2018-02-22 22:13:11',NULL),(37,'2018-01-20 05:00:00','WC Miles','17',320.00,'','2018-02-22 22:15:32',NULL),(38,'2018-02-24 05:00:00','PASE  @ Shukla via Jersey','17',220.00,'','2018-02-24 06:03:43',NULL);
+/*!40000 ALTER TABLE `expense_old` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-03-06 13:12:00

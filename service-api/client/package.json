@@ -8,6 +8,7 @@
     "chart.js": "^2.7.2",
     "history": "^4.7.2",
     "match-sorter": "^2.2.0",
+    "material-ui":"^0.20.0",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.0",
     "react-addons-transition-group": "^15.6.0",
@@ -22,6 +23,7 @@
     "react-tabs": "^2.1.1",
     "react-transition-group": "^1.2.0",
     "react-touch": "^0.4.3",
+    "react-swipeable-views":"^0.12.13",
     "reactstrap": "^4.8.0",
     "redux": "^3.6.0",
     "redux-saga": "^0.15.4"
