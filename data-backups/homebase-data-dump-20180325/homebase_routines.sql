@@ -1,4 +1,6 @@
--- MySQL dump 10.13  Distrib 5.7.20, for osx10.11 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `homebase` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `homebase`;
+-- MySQL dump 10.13  Distrib 5.7.21, for macos10.13 (x86_64)
 --
 -- Host: 108.52.189.121    Database: homebase
 -- ------------------------------------------------------
@@ -63,7 +65,9 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `chart_view_monthly` AS SELECT 
  1 AS `name`,
- 1 AS `data`*/;
+ 1 AS `data`,
+ 1 AS `yAxisID`,
+ 1 AS `fill`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -90,7 +94,8 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `category_view` AS SELECT 
  1 AS `categoryid`,
- 1 AS `CategoryName`*/;
+ 1 AS `CategoryName`,
+ 1 AS `CategoryImage`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -106,7 +111,8 @@ SET character_set_client = utf8;
  1 AS `Date`,
  1 AS `Title`,
  1 AS `Category`,
- 1 AS `Cost`*/;
+ 1 AS `Cost`,
+ 1 AS `CategoryImage`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -190,7 +196,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`%.%.%.%` SQL SECURITY DEFINER */
-/*!50001 VIEW `chart_view_monthly` AS select `g`.`CategoryName` AS `name`,concat('{',group_concat(`g`.`DataPoint` separator ','),'}') AS `data` from (select `homebase`.`category`.`category` AS `CategoryName`,concat('"2018-01-01":',' 0') AS `DataPoint` from `homebase`.`category` where (`homebase`.`category`.`isactive` = 1) union select `c`.`CategoryName` AS `CategoryName`,concat('"',coalesce(last_day(concat(`s`.`Year-Month`,'-01')),`c`.`lastDay`),'": ',coalesce(`s`.`Total`,0)) AS `DataPoint` from (`homebase`.`category_dates_x` `c` left join `homebase`.`sum_category_by_month` `s` on(((`s`.`CategoryName` = `c`.`CategoryName`) and (last_day(concat(`s`.`Year-Month`,'-01')) = `c`.`lastDay`)))) where (year(`c`.`lastDay`) = year(now()))) `g` where (`g`.`CategoryName` <> 'Miles') group by `g`.`CategoryName` */;
+/*!50001 VIEW `chart_view_monthly` AS select `l`.`name` AS `name`,concat('[',group_concat('"',`l`.`data`,'"' separator ','),']') AS `data`,`l`.`name` AS `yAxisID`,0 AS `fill` from (select 'labels' AS `name`,concat((year(now()) - 1),'-12') AS `data` union select distinct 'labels' AS `name`,date_format(`x`.`lastDay`,'%Y-%m') AS `data` from `homebase`.`category_dates_x` `x` where (year(`x`.`lastDay`) = year(now()))) `l` group by `l`.`name` union select `g`.`CategoryName` AS `name`,concat('{',group_concat(`g`.`DataPoint` separator ','),'}') AS `data`,`g`.`CategoryName` AS `yAxisID`,0 AS `fill` from (select `homebase`.`category`.`category` AS `CategoryName`,concat('"',year(now()),'-01-01": 0') AS `DataPoint` from `homebase`.`category` where (`homebase`.`category`.`isactive` = 1) union select `c`.`CategoryName` AS `CategoryName`,concat('"',coalesce(last_day(concat(`s`.`Year-Month`,'-01')),`c`.`lastDay`),'": ',coalesce(`s`.`Total`,0)) AS `DataPoint` from (`homebase`.`category_dates_x` `c` left join `homebase`.`sum_category_by_month` `s` on(((`s`.`CategoryName` = `c`.`CategoryName`) and (last_day(concat(`s`.`Year-Month`,'-01')) = `c`.`lastDay`)))) where (year(`c`.`lastDay`) = year(now()))) `g` group by `g`.`CategoryName` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -226,7 +232,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `category_view` AS select `c`.`categoryid` AS `categoryid`,`c`.`category` AS `CategoryName` from `category` `c` where (`c`.`isactive` = 1) order by `c`.`category` */;
+/*!50001 VIEW `category_view` AS select `c`.`categoryid` AS `categoryid`,`c`.`category` AS `CategoryName`,`c`.`url` AS `CategoryImage` from `category` `c` where (`c`.`isactive` = 1) order by `c`.`category` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -244,7 +250,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `expense_view` AS select `e`.`expenseid` AS `expenseid`,json_unquote(json_extract(`e`.`details`,'$.expense_date')) AS `Date`,json_unquote(json_extract(`e`.`details`,'$.title')) AS `Title`,`c`.`category` AS `Category`,json_unquote(json_extract(`e`.`details`,'$.cost')) AS `Cost` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) order by json_unquote(json_extract(`e`.`details`,'$.expense_date')) desc,json_unquote(json_extract(`e`.`details`,'$.title')) */;
+/*!50001 VIEW `expense_view` AS select `e`.`expenseid` AS `expenseid`,json_unquote(json_extract(`e`.`details`,'$.expense_date')) AS `Date`,json_unquote(json_extract(`e`.`details`,'$.title')) AS `Title`,`c`.`category` AS `Category`,json_unquote(json_extract(`e`.`details`,'$.cost')) AS `Cost`,`c`.`url` AS `CategoryImage` from (`expense` `e` join `category` `c` on((`c`.`categoryid` = `e`.`categoryid`))) where (`e`.`isactive` = 1) order by json_unquote(json_extract(`e`.`details`,'$.expense_date')) desc,json_unquote(json_extract(`e`.`details`,'$.title')) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -395,4 +401,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-01 16:12:28
+-- Dump completed on 2018-03-25 11:50:02
