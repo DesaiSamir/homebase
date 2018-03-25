@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
-import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui/svg-icons/editor/mode-edit';
 import Seminars from '../images/seminar-red.png'
 import Mileage from '../images/mileage-brown.png'
@@ -73,13 +72,14 @@ export default class MuiGridList extends Component {
             case 'Tip':
                 return Tips;
             default:
-            return Unknown;
+                return Unknown;
         }
       }
     renderExpenseList(){
         var gridData = {};
         var gridList = "";
         var i = 0;
+        var j = 0;
         if(this.state.data.length>0){
             gridData = this.loadGridData(this.state.data);
             gridList = (
@@ -87,6 +87,7 @@ export default class MuiGridList extends Component {
                     {gridData.map((gridItem) => (
                         <ListItem
                             initiallyOpen={((i = i + 1) === 1)?true:false}
+                            style={{color: 'white'}}
                             primaryText={gridItem.month}
                             primaryTogglesNestedList={true}
                             nestedItems={[
@@ -96,6 +97,7 @@ export default class MuiGridList extends Component {
                                             <ListItem
                                                 key={tile.CategoryImage}
                                                 primaryText={tile.Title}
+                                                style={((j = j + 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
                                                 secondaryText={                                         
                                                     (tile.Category === 'Miles') 
                                                         ? <span>Date: <b>{tile.Date}</b> Mileage: <b>{tile.Cost} miles</b></span> 
@@ -133,6 +135,12 @@ const styles = {
     },
     gridList: {
         width: '100%',
-        backgroundColor: 'teal'
+        backgroundColor: '#00796B',
     },
+    colorOdd: {
+        backgroundColor: '#B2DFDB'
+    },
+    colorEven: {
+        backgroundColor: '#4DB6AC'
+    }
 };
