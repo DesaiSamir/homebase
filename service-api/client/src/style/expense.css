@@ -34,6 +34,7 @@
     background-color: #FFFFFF;
     overflow: hidden;
     text-align: justify;
+    -webkit-overflow-scrolling: touch;
   }
   
   p span {
@@ -127,8 +128,8 @@
   }
   .bottomButtons{
     width: 100%;
-    position:fixed;
-    bottom:0px;
+    /* position:fixed;
+    bottom:0px; */
     display: flex;
     text-align: center;
   }

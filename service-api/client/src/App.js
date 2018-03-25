@@ -2,57 +2,74 @@ import React, { Component } from 'react';
 import logo from './sd_logo.png';
 import './style/App.css';
 import { Link } from 'react-router-dom';
-import Sidebar from './common/Sidebar'
+import AppBar from 'material-ui/AppBar';
+import FontIcon from 'material-ui/FontIcon';
+import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import Paper from 'material-ui/Paper';
+
+const expenseIcon = <FontIcon className="material-icons">attach_money</FontIcon>;
+const categoryIcon = <FontIcon className="material-icons">settings_applications</FontIcon>;
+const aboutusIcon = <FontIcon className="material-icons">account_circle</FontIcon>;
+const homeIcon = <FontIcon className="material-icons">home</FontIcon>;
 
 class App extends Component {
   
   constructor(props){
     super(props)
     this.state = {
-      sidebarOpen: false
+      selectedIndex: 0
     }
   }
 
-  componentDidMount(){
-
-    // this.setState({
-    //   sidebarOpen: false
-    // });
-  }
-
-  handleViewSidebar(){
-    this.setState({
-      sidebarOpen: !this.state.sidebarOpen
-    });
-  }
+  select = (index) => this.setState({selectedIndex: index});
 
   render() {
-    
-
     return (
-      <div className="App" >
-        <header className="App-header" style={{height: this.props.appHeights.appHeaderHeight - 10}}>
-          <div className="app-logo">
-            <img src={logo} alt="logo" />
-          </div>
-          <div className="app-title">
-            Expense App
-          </div>
-          <div className="menu" onClick={this.handleViewSidebar.bind(this)}><i className="material-icons">reorder</i>
-            <Sidebar isOpen={this.state.sidebarOpen} toggleSidebar={this.handleViewSidebar.bind(this)} >
-              <Link to="/Home"><div className="menu-item">Home</div></Link>
-              <Link to="/Expense"><div className="menu-item">Expenses</div></Link>
-              <Link to="/Category"><div className="menu-item">Category</div></Link>
-              <Link to="/About"><div className="menu-item">About Us</div></Link>
-            </Sidebar>
-          </div>
-        </header>
-        <div ref="content">
+      <Paper>
+        <AppBar 
+          title="Expense App" 
+          style={{height: this.props.appHeights.appHeaderHeight}}
+          iconElementLeft={ <img src={logo} alt="logo" style={styles.appLogo}/> }>
+        </AppBar>
+        <Paper zDepth={1}>
           {this.props.children}
-        </div>        
-      </div>
+          <BottomNavigation selectedIndex={this.state.selectedIndex}>
+          <Link to="/Home">
+            <BottomNavigationItem
+              label="Home"
+              icon={homeIcon}
+              onClick={() => this.select(0)} />
+          </Link>
+          <Link to="/Expense">
+            <BottomNavigationItem
+              label="Expenses"
+              icon={expenseIcon}
+              onClick={() => this.select(1)} />
+          </Link>
+          <Link to="/Category">
+            <BottomNavigationItem
+              label="Categories"
+              icon={categoryIcon}
+              onClick={() => this.select(2)} />
+          </Link>
+          <Link to="/About">
+            <BottomNavigationItem
+              label="About Me"
+              icon={aboutusIcon}
+              onClick={() => this.select(3)} />
+          </Link>
+          </BottomNavigation>
+        </Paper>
+      </Paper>
     );
   }
 }
 
 export default App;
+
+const styles = {
+  appLogo: {
+    height: 40,
+    animation: 'App-logo-spin infinite 20s linear'
+  }
+}

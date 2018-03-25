@@ -57,10 +57,11 @@ export default class TableComponent extends Component{
                     (new RegExp("([a-zA-Z0-9]+://)").test(row.value)) ? ((row.value.toLowerCase().match(/\.(jpeg|jpg|gif|png)$/) != null) ?
                         (<div style={{
                             backgroundColor: '#545454',
-                            textAlign: 'center'
+                            textAlign: 'center',
+                            maxHeight: 50
                         }}>
                             <a target='_blank' href={`${row.value.replace('/310/', '/')}`}>
-                                <img src={`${row.value}`} alt=""></img>
+                                <img style={{ width: '100%'}} src={`${row.value}`} alt=""></img>
                             </a>
                         </div>) :
                         <a target='_blank' href={`${row.value}`}> {`${row.value}`}</a>
@@ -88,7 +89,7 @@ export default class TableComponent extends Component{
                     defaultPageSize={this.state.rowCount} 
                     className="-striped -highlight" 
                     getTrProps={this.props.onRowClick} 
-                    style={{height: this.props.tableHight}}
+                    style={{height: this.props.tableHight, WebkitOverflowScrolling: 'touch',}}
                     showPageSizeOptions={false}
                     />
             </div>;

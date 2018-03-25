@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import SwipeableViews from 'react-swipeable-views';
 import {Line, Pie} from 'react-chartjs-2';
 import {defineSwipe, Swipeable} from 'react-touch';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Table from '../common/TableComponent';
 import SupportTouch from '../common/SupportTouch';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import requests from '../utils/requestHelper';
 import '../style/home.css';
 import '../style/react-tabs.css';
@@ -46,7 +43,7 @@ export default class Home extends Component{
         requests.getDataByTableName("sum_category_by_year", this, this.getYearlyChartData.bind(this));
         
         var appHeights = this.props.appHeights
-        var tableHeight = window.innerHeight - appHeights.tableHeight - 45;
+        var tableHeight = window.innerHeight - appHeights.tableHeight - 50;
         var chartHeight = tableHeight * 0.50;
         this.setState({
             tableHeight: tableHeight - chartHeight,
@@ -286,40 +283,36 @@ export default class Home extends Component{
     renderTabs(){
         const { tabIndex } = this.state;
         let tabs = (
-            <MuiThemeProvider>
-                <SupportTouch>
-                    <Tabs value={tabIndex} onChange={this.handleChange} style={styles.tabs}>
-                        <Tab value={0} label="Yearly"/>
-                        <Tab value={1} label="Monthly"/>
-                    </Tabs>
-                    <SwipeableViews index={tabIndex} onChangeIndex={this.handleChangeIndex}>
-                        <div title="Yearly">
-                            {this.renderTabByYear()}
-                        </div>
-                        <div title="Monthly">
-                            {this.renderTabByMonth()}
-                        </div>
-                    </SwipeableViews>
-                </SupportTouch>
-            </MuiThemeProvider>
+            <SupportTouch>
+                <Tabs value={tabIndex} onChange={this.handleChange} style={styles.tabs}>
+                    <Tab value={0} label="Yearly"/>
+                    <Tab value={1} label="Monthly"/>
+                </Tabs>
+                <SwipeableViews index={tabIndex} onChangeIndex={this.handleChangeIndex}>
+                    <div title="Yearly">
+                        {this.renderTabByYear()}
+                    </div>
+                    <div title="Monthly">
+                        {this.renderTabByMonth()}
+                    </div>
+                </SwipeableViews>
+            </SupportTouch>
         );
 
         return tabs;
     }
 
+    state = {
+        selectedIndex: 0,
+    };
+    select = (index) => this.setState({selectedIndex: index});
+
     renderHomePage(){
-        var bodyHeight = window.innerHeight - this.props.appHeights.appHeaderHeight - 100;
         let homePage = (
             <div >
-                <h1>Home</h1>
-                <div className="page-buttons">
-                    <div className="button" ><Link to="/Expense">Expenses</Link></div>
-                    <div className="button" ><Link to="/Category">Category</Link></div>
-                    <div className="button" ><Link to="/About">About Us</Link></div>
-                </div>
-                <div className="home-page-content" style={{height: bodyHeight}}>
+                <div className="home-page-content" >
                     <div className="page-content">
-                    {this.renderTabs()}
+                        {this.renderTabs()}
                     </div>
                 </div>
             </div>

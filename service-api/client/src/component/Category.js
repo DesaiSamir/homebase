@@ -20,7 +20,7 @@ export default class Category extends Component {
 
     var appHeights = this.props.appHeights
     this.setState({
-      tableHeight: window.innerHeight - appHeights.tableHeight + 1
+      tableHeight: window.innerHeight - appHeights.tableHeight - 2
     })
   }
   
@@ -135,7 +135,7 @@ export default class Category extends Component {
     return (
       <div>
         <div id="categoryTable">
-          {this.renderCategoryHeader()}
+          {/* {this.renderCategoryHeader()} */}
           <Table 
             data={this.state.data} 
             tableHight={this.state.tableHeight}

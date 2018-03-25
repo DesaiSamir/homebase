@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import requests from '../utils/requestHelper';
-import Table from '../common/TableComponent';
+import GridList from '../common/GridList';
 import '../style/expense.css'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentClear from 'material-ui/svg-icons/content/clear';
+import ContentSave from 'material-ui/svg-icons/content/save';
+import Paper from 'material-ui/Paper';
+
 
 export default class Expense extends Component {
 
@@ -9,6 +15,7 @@ export default class Expense extends Component {
         super(props);
         this.state = {
             data: [],
+            gridData:{},
             tableHeight: 0,
             addExpense: false,
             today: "",
@@ -25,7 +32,7 @@ export default class Expense extends Component {
         var today = requests.formatDate(new Date()); 
         this.setState({
             today: today,
-            tableHeight: window.innerHeight - appHeights.tableHeight + 1
+            tableHeight: window.innerHeight - appHeights.tableHeight
         });
         var expenseDate = document.getElementById("expenseDate");
         expenseDate.value = today;
@@ -39,12 +46,12 @@ export default class Expense extends Component {
                 options += "<option data-id=" + cat.categoryid + ">" + cat.CategoryName + "</option>";
             });
         if(!this.state.rowInfo)
-            category.innerHTML = options;
-        
+            category.innerHTML = options;        
     }
+    
+    
 
-    onSubmit(e){
-        e.preventDefault();
+    onSubmit(){
         const expenseid = document.getElementById("expenseId").value;
         const expense_date = document.getElementById("expenseDate").value;
         const title = document.getElementById("title").value;
@@ -136,10 +143,9 @@ export default class Expense extends Component {
         var formWidth = window.innerWidth - 40;
         var inputWidth = formWidth - 70;
         let expenseForm = (
-            <form className="categoryForm" onSubmit={this.onSubmit.bind(this)}>
-                <h1>Expense Form</h1>
+            <form className="categoryForm">
                 
-                <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 2}}>
+                <div className="contentform" style={{overflowY: 'scroll', WebkitOverflowScrolling: 'touch',height: this.state.tableHeight + 70}}>
                     <div className="form-group" style={{width: formWidth}}>
                         <p>Expense Id: <span>*</span></p>
                         <span className="icon-case"><i className="material-icons">fingerprint</i></span>
@@ -187,14 +193,14 @@ export default class Expense extends Component {
                         <span className="icon-case"><i className="material-icons">done</i></span>
                         <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
                     </div>
-                </div>
-                <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
-                    <div className="cancelExpense expButtons" onClick={this.onCancelExpense}>
-                        <h2>Cancel</h2>
-                    </div>
-                    <button type="submit" className="saveExpense expButtons" >
-                        <h2>Save</h2>
-                    </button>
+                    <Paper style={{textAlign:'center', height:150}}>
+                        <FloatingActionButton backgroundColor='red' onClick={this.onCancelExpense} style={{marginRight:50, marginTop:6}}>
+                            <ContentClear />
+                        </FloatingActionButton>
+                        <FloatingActionButton backgroundColor='green' onClick={this.onSubmit.bind(this)} style={{marginLeft:50, marginTop:6}}>
+                            <ContentSave />
+                        </FloatingActionButton>
+                    </Paper>
                 </div>
             </form> 
         );
@@ -211,6 +217,15 @@ export default class Expense extends Component {
         this.setState({category: data})
     }
 
+    onItemClick(expense){
+        
+        var rowInfo = {
+            original: expense
+        }
+        
+        this.setState({rowInfo: rowInfo});
+    }
+
     onRowClick(state, rowInfo, column, instance){
         return {
             onClick: e => {
@@ -223,23 +238,30 @@ export default class Expense extends Component {
         var overlay = this.state.rowInfo ? this.onLoadExpense(this.state.rowInfo) : null;
         return (
             <div>
-                <div id="expenseTable">
-                    {this.renderExpenseHeader()}
-                    <Table 
-                        data={this.state.data} 
-                        tableHight={this.state.tableHeight}
-                        onRowClick={this.onRowClick.bind(this)}/>
-                    <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
-                        <div className="addExpense expButtons"  onClick={this.onLoadExpense.bind(this)}>
-                            <h2>Add Expense</h2>
-                        </div>
-                    </div>
-                </div>
-                <div id="addExpense" style={{display: 'none'}}>
+                <Paper id="expenseTable">
+                    <GridList 
+                        data={this.state.data}
+                        gridHeight={this.state.tableHeight}
+                        onItemClick={this.onItemClick.bind(this)}/>
+
+                    <FloatingActionButton style={styles.floatingButton} onClick={this.onLoadExpense.bind(this)}>
+                        <ContentAdd />
+                    </FloatingActionButton>
+                </Paper>
+                <Paper id="addExpense" style={{display: 'none', height: this.state.tableHeight, overflowY: 'scroll'}}>
                     {this.renderExpenseForm(this.state.rowInfo)}
-                </div>
+                </Paper>
                 {overlay}
             </div>
         )
     }
 };
+
+const styles = {
+    floatingButton: {
+        position: 'fixed',
+        zIndex: 2,
+        marginTop: -68,
+        right: 5,
+    },
+  };
