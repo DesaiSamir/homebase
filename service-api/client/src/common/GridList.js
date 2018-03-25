@@ -3,10 +3,10 @@ import {List, ListItem} from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui/svg-icons/editor/mode-edit';
 import Seminars from '../images/seminar-red.png'
-import Mileage from '../images/mileage-transparent.png'
+import Mileage from '../images/mileage-brown.png'
 import Books from '../images/books-red.png'
-import Tips from '../images/tip-yellow.png'
-import Meals from '../images/meals-green.png'
+import Tips from '../images/tip-black.png'
+import Meals from '../images/meals-yellow.png'
 import Unknown from '../images/unknown-blue.png'
 import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
@@ -98,8 +98,8 @@ export default class MuiGridList extends Component {
                                                 primaryText={tile.Title}
                                                 secondaryText={                                         
                                                     (tile.Category === 'Miles') 
-                                                        ? <span>Date: {tile.Date}    <b>{tile.Cost} miles</b></span> 
-                                                        : <span>Date: {tile.Date}    Cost: <b>${tile.Cost}.00</b></span>}
+                                                        ? <span>Date: <b>{tile.Date}</b> Mileage: <b>{tile.Cost} miles</b></span> 
+                                                        : <span>Date: <b>{tile.Date}</b> Cost: <b>${tile.Cost}.00</b></span>}
                                                 rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
                                                 leftAvatar={ <Avatar src={this.renderSwitch(tile.Category)} /> }>
                                             </ListItem>
