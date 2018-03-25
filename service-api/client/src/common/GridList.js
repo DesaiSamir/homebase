@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import {GridList, GridTile} from 'material-ui/GridList';
+import {List, ListItem} from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
-import Subheader from 'material-ui/Subheader';
-import Edit from 'material-ui/svg-icons/image/edit';
-import categoryImg from '../images/category.jpg'
+import Edit from 'material-ui/svg-icons/editor/mode-edit';
+import Seminars from '../images/seminar-red.png'
+import Mileage from '../images/mileage-transparent.png'
+import Books from '../images/books-red.png'
+import Tips from '../images/tip-yellow.png'
+import Meals from '../images/meals-green.png'
+import Unknown from '../images/unknown-blue.png'
+import Avatar from 'material-ui/Avatar';
+import Paper from 'material-ui/Paper';
 
 export default class MuiGridList extends Component {
     constructor(props) {
@@ -54,39 +60,56 @@ export default class MuiGridList extends Component {
         });
         return gridData;
     }
-
+    renderSwitch(param) {
+        switch(param) {
+            case 'Seminars':
+                return Seminars;
+            case 'Books':
+                return Books;
+            case 'Miles':
+                return Mileage;
+            case 'Meals':
+                return Meals;
+            case 'Tip':
+                return Tips;
+            default:
+            return Unknown;
+        }
+      }
     renderExpenseList(){
         var gridData = {};
         var gridList = "";
+        var i = 0;
         if(this.state.data.length>0){
             gridData = this.loadGridData(this.state.data);
             gridList = (
-                    gridData.map((gridItem) => (
-                        <GridList
-                            cellHeight={70}
-                            cols={1}
-                            style={styles.gridList}>
-                            <Subheader>{gridItem.month}</Subheader>
-                            {gridItem.data.map((tile) => (
-                                <div style={{height: 68}} key={tile.expenseid}>
-                                    <GridTile
-                                        key={tile.CategoryImage}
-                                        title={tile.Title}
-                                        titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.5) 40%,rgba(0,0,0,0.3) 100%)"
-                                        subtitle={                                         
-                                            (tile.Category === 'Miles') 
-                                                ? <span>Date: {tile.Date}    <b>{tile.Cost} miles</b></span> 
-                                                : <span>Date: {tile.Date}    Cost: <b>${tile.Cost}.00</b></span>}
-                                        actionIcon={
-                                            <IconButton onClick={() => this.props.onItemClick(tile)}>
-                                                <Edit color="white" />
-                                            </IconButton>}>
-                                        <img src={(tile.CategoryImage)?tile.CategoryImage : categoryImg} style={{opacity: 0.7}} alt=""/>
-                                    </GridTile>
-                                </div>
-                            ), this)}
-                        </GridList> 
-                    ), this)
+                <List style={styles.gridList}>
+                    {gridData.map((gridItem) => (
+                        <ListItem
+                            initiallyOpen={((i = i + 1) === 1)?true:false}
+                            primaryText={gridItem.month}
+                            primaryTogglesNestedList={true}
+                            nestedItems={[
+                                gridItem.data.map((tile) => (
+                                    <div key={tile.expenseid}>
+                                        <Paper>
+                                            <ListItem
+                                                key={tile.CategoryImage}
+                                                primaryText={tile.Title}
+                                                secondaryText={                                         
+                                                    (tile.Category === 'Miles') 
+                                                        ? <span>Date: {tile.Date}    <b>{tile.Cost} miles</b></span> 
+                                                        : <span>Date: {tile.Date}    Cost: <b>${tile.Cost}.00</b></span>}
+                                                rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
+                                                leftAvatar={ <Avatar src={this.renderSwitch(tile.Category)} /> }>
+                                            </ListItem>
+                                        </Paper>
+                                    </div>
+                                ), this)
+                            ]}
+                        />
+                    ), this)}
+                </List>
             )
         }
 
@@ -109,6 +132,7 @@ const styles = {
         justifyContent: 'space-around'    
     },
     gridList: {
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'teal'
     },
 };
