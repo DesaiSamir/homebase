@@ -6,6 +6,7 @@ import Tabs, { Tab } from 'material-ui/Tabs';
 import Table from '../common/TableComponent';
 import SupportTouch from '../common/SupportTouch';
 import requests from '../utils/requestHelper';
+import Paper from 'material-ui/Paper';
 import '../style/home.css';
 import '../style/react-tabs.css';
 
@@ -305,24 +306,15 @@ export default class Home extends Component{
     state = {
         selectedIndex: 0,
     };
+    
     select = (index) => this.setState({selectedIndex: index});
 
-    renderHomePage(){
-        let homePage = (
-            <div >
-                <div className="home-page-content" >
-                    <div className="page-content">
-                        {this.renderTabs()}
-                    </div>
-                </div>
-            </div>
-        );
-
-        return homePage;
-    }
-
     render(){
-        return this.renderHomePage()
+        return (
+            <Paper >
+                {this.renderTabs()}
+            </Paper>
+        );
     }
 }
 

@@ -24,16 +24,18 @@ class App extends Component {
   select = (index) => this.setState({selectedIndex: index});
 
   render() {
+    var bodyHeight = window.innerHeight - this.props.appHeights.appHeaderHeight - this.props.appHeights.appFooterHeight
     return (
-      <Paper>
+      <Paper zDepth={-1}>
         <AppBar 
-          title="Expense App" 
-          style={{height: this.props.appHeights.appHeaderHeight}}
+          title="Expense App"
+          style={{boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',height: this.props.appHeights.appHeaderHeight}}
           iconElementLeft={ <img src={logo} alt="logo" style={styles.appLogo}/> }>
         </AppBar>
-        <Paper zDepth={1}>
+        <Paper style={{height: bodyHeight, overflowY: 'scroll', WebkitOverflowScrolling: 'touch',}}>
           {this.props.children}
-          <BottomNavigation selectedIndex={this.state.selectedIndex}>
+        </Paper>
+        <BottomNavigation selectedIndex={this.state.selectedIndex} style={styles.bottomNavigation} >
           <Link to="/Home">
             <BottomNavigationItem
               label="Home"
@@ -58,8 +60,7 @@ class App extends Component {
               icon={aboutusIcon}
               onClick={() => this.select(3)} />
           </Link>
-          </BottomNavigation>
-        </Paper>
+        </BottomNavigation>
       </Paper>
     );
   }
@@ -71,5 +72,9 @@ const styles = {
   appLogo: {
     height: 40,
     animation: 'App-logo-spin infinite 20s linear'
+  },
+  bottomNavigation: {
+    backgroundColor: '#26C6DA',
+    boxShadow: '0 -4px 10px 0px rgba(0,0,0,0.8)',
   }
 }

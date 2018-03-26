@@ -18,7 +18,8 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 
 
 const appHeights = {
-    appHeaderHeight : 60,
+    appHeaderHeight : 56,
+    appFooterHeight : 56,
     pageHeaderHeight: 0,
     pageFooterHeight: 0,
     tableHeight: 115
