@@ -22,7 +22,8 @@ const appHeights = {
     appFooterHeight : 56,
     pageHeaderHeight: 0,
     pageFooterHeight: 0,
-    tableHeight: 115
+    tableHeight: 115,
+    contentHeight: window.innerHeight - 112
 };
 
 const routes = <Router>

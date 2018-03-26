@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import requests from '../utils/requestHelper';
-import Table from '../common/TableComponent';
 import '../style/category.css'
+import GridList from '../common/GridList';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentClear from 'material-ui/svg-icons/content/clear';
+import ContentSave from 'material-ui/svg-icons/content/save';
+import Paper from 'material-ui/Paper';
 
 export default class Category extends Component {
 
@@ -24,8 +29,7 @@ export default class Category extends Component {
     })
   }
   
-  onSubmit(e){
-    e.preventDefault();
+  onSubmit(){
     const categoryId = document.getElementById("categoryId").value;
     const categoryName = document.getElementById("categoryName").value;
     var isactive = 0;
@@ -49,7 +53,14 @@ export default class Category extends Component {
     const table_name = 'category_view';
     requests.getDataByTableName(table_name, this);
   }
-
+  onItemClick(category){
+        
+    var rowInfo = {
+        original: category
+    }
+    
+    this.setState({rowInfo: rowInfo});
+  }
   onRowClick(state, rowInfo, column, instance){
     return {
       onClick: e => {
@@ -86,7 +97,7 @@ export default class Category extends Component {
     var formWidth = window.innerWidth - 40;
     var inputWidth = formWidth - 70;
     let categoryForm = (
-      <form className="categoryForm" onSubmit={this.onSubmit.bind(this)}>
+      <form className="categoryForm">
           <h1>Category</h1>
           
           <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 3}}>
@@ -107,50 +118,54 @@ export default class Category extends Component {
                   <span className="icon-case"><i className="material-icons">done</i></span>
                   <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
               </div>
-          </div>
-          <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
-              <div className="cancelExpense expButtons" onClick={this.onCancelCategory}>
-                <h2>Cancel</h2>
-              </div>
-              <button type="submit" className="saveExpense expButtons" >
-                <h2>Save</h2>
-              </button>
+              <Paper style={{textAlign:'center', height:150}}>
+                        <FloatingActionButton backgroundColor='red' onClick={this.onCancelCategory} style={{marginRight:50, marginTop:6}}>
+                            <ContentClear />
+                        </FloatingActionButton>
+                        <FloatingActionButton backgroundColor='green' onClick={this.onSubmit.bind(this)} style={{marginLeft:50, marginTop:6}}>
+                            <ContentSave />
+                        </FloatingActionButton>
+                    </Paper>
           </div>
       </form> 
     );
     return categoryForm;
   }
 
-  renderCategoryHeader(){
-    let categoryForm = (
-      <form id="Category" style={{height: this.props.appHeights.pageHeaderHeight}}>
-            <h1>Category</h1>
-        </form>
-    );
-    return categoryForm;
-  }
   render() {
     var overlay = this.state.rowInfo ? this.onLoadCategory(this.state.rowInfo) : null;
 
     return (
-      <div>
-        <div id="categoryTable">
-          {/* {this.renderCategoryHeader()} */}
-          <Table 
-            data={this.state.data} 
-            tableHight={this.state.tableHeight}
-            onRowClick={this.onRowClick.bind(this)}/>
-          <div className="bottomButtons" style={{height: this.props.appHeights.pageFooterHeight}}>
-          <div className="addExpense expButtons" onClick={this.onLoadCategory.bind(this)}>
-            <h2>Add Category</h2>
-          </div>
-        </div>
-        </div>
+      <div style={{height:this.props.appHeights.contentHeight}}>
+          <Paper id="categoryTable" style={styles.content} >
+            <GridList 
+              data={this.state.data}
+              gridHeight={this.state.tableHeight}
+              onItemClick={this.onItemClick.bind(this)}
+              renderScreen='category'
+              />
+
+            <FloatingActionButton style={styles.floatingButton} onClick={this.onLoadCategory.bind(this)}>
+              <ContentAdd />
+            </FloatingActionButton>
+          </Paper>
         <div id="addCategory" style={{display: 'none'}}>
           {this.renderCategoryForm(this.state.rowInfo)}
         </div>
         {overlay}
       </div>
     )
+  }
+};
+
+const styles = {
+  floatingButton: {
+      position: 'fixed',
+      zIndex: 2,
+      marginTop: -68,
+      right: 5,
+  },
+  content: {
+    height: '100%'
   }
 };

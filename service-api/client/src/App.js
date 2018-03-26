@@ -24,7 +24,7 @@ class App extends Component {
   select = (index) => this.setState({selectedIndex: index});
 
   render() {
-    var bodyHeight = window.innerHeight - this.props.appHeights.appHeaderHeight - this.props.appHeights.appFooterHeight
+    var bodyHeight = this.props.appHeights.contentHeight
     return (
       <Paper zDepth={-1}>
         <AppBar 

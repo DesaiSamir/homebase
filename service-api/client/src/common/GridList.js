@@ -15,7 +15,8 @@ export default class MuiGridList extends Component {
         super(props);
         this.state = {
             data: [],
-            gridHeight: window.innerHeight
+            gridHeight: window.innerHeight,
+            renderScreen: 'expense'
         };
     }
 
@@ -23,7 +24,8 @@ export default class MuiGridList extends Component {
         if(this.props.data.length>0){
             this.setState({ 
                 data: this.props.data,
-                gridHeight: this.props.gridHeight
+                gridHeight: this.props.gridHeight,
+                renderScreen: this.props.renderScreen
             });
         }
     }
@@ -32,7 +34,8 @@ export default class MuiGridList extends Component {
         if(nextProps.data.length>0){
             this.setState({ 
                 data: nextProps.data,
-                gridHeight: this.props.gridHeight
+                gridHeight: this.props.gridHeight,
+                renderScreen: this.props.renderScreen
             });
         }
     }
@@ -62,7 +65,7 @@ export default class MuiGridList extends Component {
         });
         return gridData;
     }
-    renderSwitch(param) {
+    renderCategoryLogoSwitch(param) {
         switch(param) {
             case 'Seminars':
                 return Seminars;
@@ -117,7 +120,7 @@ export default class MuiGridList extends Component {
                     {gridData.map((gridItem) => (
                         <ListItem
                             initiallyOpen={((i += 1) === 1)?true:false}
-                            style={{color: 'white'}}
+                            style={styles.listHeader}
                             primaryText={gridItem.month}
                             primaryTogglesNestedList={true}
                             nestedItems={[
@@ -129,7 +132,7 @@ export default class MuiGridList extends Component {
                                             style={((j += 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
                                             secondaryText={this.renderSecondaryText(tile)}
                                             rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
-                                            leftAvatar={ <Avatar src={this.renderSwitch(tile.Category)} /> }>
+                                            leftAvatar={ <Avatar src={this.renderCategoryLogoSwitch(tile.Category)} /> }>
                                         </ListItem>
                                     </Paper>
                                 ), this)
@@ -143,12 +146,55 @@ export default class MuiGridList extends Component {
         return gridList;
     }
 
+    renderCategoryList(){
+        var gridList = "";
+        var gridData = {};
+        var j=0;
+        if(this.state.data.length>0){
+            gridData = this.state.data;
+            gridList = (
+                <List style={styles.gridList}>
+                    <ListItem
+                        initiallyOpen={true}
+                        style={styles.listHeader}
+                        primaryText='Categories'
+                        primaryTogglesNestedList={true}
+                        nestedItems={[
+                            gridData.map((tile) => (
+                                <Paper>
+                                    <ListItem
+                                        primaryText={tile.CategoryName}
+                                        style={((j += 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
+                                        rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
+                                        leftAvatar={ <Avatar src={this.renderCategoryLogoSwitch(tile.CategoryName)} /> }>
+                                    </ListItem>
+                                </Paper>
+                            ), this)
+                        ]}
+                    />
+                </List>
+            )
+        }
+        return gridList
+    }
+
+    renderPageSwitch() {
+        switch(this.state.renderScreen) {
+            case 'expense':
+                return this.renderExpenseList();
+            case 'category':
+                return this.renderCategoryList();            
+            default:
+                return "";
+        }
+    }
+
     render() {
-        return <div style={{height: this.state.gridHeight, WebkitOverflowScrolling: 'touch',}}>
+        return (
             <div style={styles.root}>
-                {this.renderExpenseList()}
+                {this.renderPageSwitch()}
             </div>
-        </div>
+        )
     }
 }
 
@@ -156,7 +202,8 @@ const styles = {
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'space-around'    
+        justifyContent: 'space-around',
+        height: '100%',
     },
     gridList: {
         width: '100%',
@@ -191,5 +238,11 @@ const styles = {
         background: 'rgba(0, 0, 0, 0.6)',
         width: '50%',
         height: '100%'
+    },
+    listHeader: {
+        textAlign: 'left',
+        color: 'white',
+        boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',
+        backgroundColor: '#009688',
     }
 };

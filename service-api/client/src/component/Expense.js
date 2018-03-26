@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import requests from '../utils/requestHelper';
-import GridList from '../common/GridList';
 import '../style/expense.css'
+import GridList from '../common/GridList';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
@@ -237,12 +237,13 @@ export default class Expense extends Component {
     render() {
         var overlay = this.state.rowInfo ? this.onLoadExpense(this.state.rowInfo) : null;
         return (
-            <div>
-                <Paper id="expenseTable">
+            <div style={{height:this.props.appHeights.contentHeight}}>
+                <Paper id="expenseTable" style={styles.content}>
                     <GridList 
                         data={this.state.data}
                         gridHeight={this.state.tableHeight}
-                        onItemClick={this.onItemClick.bind(this)}/>
+                        onItemClick={this.onItemClick.bind(this)}
+                        renderScreen='expense' />
 
                     <FloatingActionButton style={styles.floatingButton} onClick={this.onLoadExpense.bind(this)}>
                         <ContentAdd />
@@ -264,4 +265,7 @@ const styles = {
         marginTop: -68,
         right: 5,
     },
+    content: {
+      height: '100%'
+    }
   };
