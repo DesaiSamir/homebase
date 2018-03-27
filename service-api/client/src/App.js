@@ -24,18 +24,21 @@ class App extends Component {
   select = (index) => this.setState({selectedIndex: index});
 
   render() {
-    var bodyHeight = this.props.appHeights.contentHeight
+
+    styles.body.height = this.props.appHeights.contentHeight
+    styles.header.height = this.props.appHeights.appHeaderHeight
+
     return (
       <Paper zDepth={-1}>
         <AppBar 
           title="Expense App"
-          style={{boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',height: this.props.appHeights.appHeaderHeight}}
+          style={styles.header}
           iconElementLeft={ <img src={logo} alt="logo" style={styles.appLogo}/> }>
-        </AppBar>
-        <Paper style={{height: bodyHeight, overflowY: 'scroll', WebkitOverflowScrolling: 'touch',}}>
+        </AppBar>        
+        <Paper style={styles.body}>
           {this.props.children}
         </Paper>
-        <BottomNavigation selectedIndex={this.state.selectedIndex} style={styles.bottomNavigation} >
+        <BottomNavigation selectedIndex={this.state.selectedIndex} style={styles.footer} >
           <Link to="/Home">
             <BottomNavigationItem
               label="Home"
@@ -73,8 +76,16 @@ const styles = {
     height: 40,
     animation: 'App-logo-spin infinite 20s linear'
   },
-  bottomNavigation: {
+  footer: {
     backgroundColor: '#26C6DA',
     boxShadow: '0 -4px 10px 0px rgba(0,0,0,0.8)',
+  },
+  body: {
+    backgroundColor: '#009688',
+    overflowY: 'scroll',
+    WebkitOverflowScrolling: 'touch',
+  },
+  header: {
+    boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',
   }
 }

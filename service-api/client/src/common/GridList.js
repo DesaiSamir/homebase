@@ -9,6 +9,7 @@ import Meals from '../images/meals-yellow.png'
 import Unknown from '../images/unknown-blue.png'
 import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
+import isDblTouchTap from "./DoubleTap"
 
 export default class MuiGridList extends Component {
     constructor(props) {
@@ -101,7 +102,7 @@ export default class MuiGridList extends Component {
     renderPrimaryText(title){
         var primaryText = (
             <Paper  style={styles.primaryText} >
-                {title}
+                <b>{title}</b>
             </Paper>
         );
 
@@ -118,26 +119,33 @@ export default class MuiGridList extends Component {
             gridList = (
                 <List style={styles.gridList}>
                     {gridData.map((gridItem) => (
-                        <ListItem
-                            initiallyOpen={((i += 1) === 1)?true:false}
-                            style={styles.listHeader}
-                            primaryText={gridItem.month}
-                            primaryTogglesNestedList={true}
-                            nestedItems={[
-                                gridItem.data.map((tile) => (
-                                    <Paper>
-                                        <ListItem
-                                            key={tile.CategoryImage}
-                                            primaryText={this.renderPrimaryText(tile.Title)}
-                                            style={((j += 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
-                                            secondaryText={this.renderSecondaryText(tile)}
-                                            rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
-                                            leftAvatar={ <Avatar src={this.renderCategoryLogoSwitch(tile.Category)} /> }>
-                                        </ListItem>
-                                    </Paper>
-                                ), this)
-                            ]}
-                        />
+                        <Paper style={styles.listItems} >
+                            <ListItem
+                                initiallyOpen={((i += 1) === 1)?true:false}
+                                style={styles.listHeader}
+                                primaryText={gridItem.month}
+                                primaryTogglesNestedList={true}
+                                nestedItems={[
+                                    gridItem.data.map((tile) => (
+                                        <Paper>
+                                            <ListItem
+                                                key={tile.CategoryImage}
+                                                primaryText={this.renderPrimaryText(tile.Title)}
+                                                style={((j += 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
+                                                secondaryText={this.renderSecondaryText(tile)}
+                                                rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
+                                                onClick={(e) => {
+                                                    if (isDblTouchTap(e)) {
+                                                        this.props.onItemClick(tile)
+                                                    }
+                                                }}
+                                                leftAvatar={ <Avatar src={this.renderCategoryLogoSwitch(tile.Category)} /> }>
+                                            </ListItem>
+                                        </Paper>
+                                    ), this)
+                                ]}
+                            />
+                        </Paper>
                     ), this)}
                 </List>
             )
@@ -166,6 +174,11 @@ export default class MuiGridList extends Component {
                                         primaryText={tile.CategoryName}
                                         style={((j += 1) % 2 === 0)? styles.colorEven : styles.colorOdd}
                                         rightIcon={ <Edit onClick={() => this.props.onItemClick(tile)}/> }
+                                        onClick={(e) => {
+                                            if (isDblTouchTap(e)) {
+                                                this.props.onItemClick(tile)
+                                            }
+                                        }}
                                         leftAvatar={ <Avatar src={this.renderCategoryLogoSwitch(tile.CategoryName)} /> }>
                                     </ListItem>
                                 </Paper>
@@ -244,5 +257,9 @@ const styles = {
         color: 'white',
         boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',
         backgroundColor: '#009688',
+    },
+    listItems: {
+        backgroundColor: '#009688',
+        paddingBottom: 7,
     }
 };
