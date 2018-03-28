@@ -312,7 +312,9 @@ export default class Home extends Component{
 
     render(){
         var homeView = (
-            <CircularProgress size={80} thickness={5} />
+            <div style={styles.loading}>
+                <CircularProgress size={80} thickness={5}  />
+            </div>
         );
     
         if(this.state.sum_category_by_year.length > 0){
@@ -358,5 +360,8 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         height: 48
+    },
+    loading:{
+        paddingTop: '50%'
     }
   };

@@ -222,7 +222,9 @@ export default class Category extends Component {
   render() {
     
     var categoryView = (
-      <CircularProgress size={80} thickness={5} />
+      <div style={styles.loading}>
+        <CircularProgress size={80} thickness={5}  />
+      </div>
     );
 
     if(this.state.data.length > 0){
@@ -289,5 +291,8 @@ const styles = {
   },
   formButtons: {
 
+  },
+  loading:{
+      paddingTop: '50%'
   }
 };
