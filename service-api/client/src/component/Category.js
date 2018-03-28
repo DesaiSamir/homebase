@@ -7,6 +7,12 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
+import TextField from 'material-ui/TextField';
+import {teal500, teal900, deepOrange900} from 'material-ui/styles/colors';
+import Toggle from 'material-ui/Toggle';
+import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 
 export default class Category extends Component {
 
@@ -16,7 +22,10 @@ export default class Category extends Component {
       data: [],
       tableHeight: 0,
       rowInfo: null,
-      tableName: 'categoryTable'
+      tableName: 'categoryTable',
+      alertOpen: false,
+      formOpen: false,
+      alertMessage: '',
     };
   }
 
@@ -29,38 +38,70 @@ export default class Category extends Component {
     })
   }
   
+  handleAlertOpen = () => {
+    this.setState({alertOpen: true});
+  };
+
+  handleAlertClose = () => {
+    this.setState({alertOpen: false});
+  };
+  
+  handleFormOpen = () => {
+    this.setState({formOpen: true});
+  };
+
+  handleFormClose = () => {
+    this.setState({
+      formOpen: false,
+      rowInfo: null
+    });
+  };
+
   onSubmit(){
     const categoryId = document.getElementById("categoryId").value;
     const categoryName = document.getElementById("categoryName").value;
     var isactive = 0;
-    if(document.getElementById("isactive").checked){
+    if(document.getElementById("isActive").checked){
         isactive = 1;
     }
     var data =  {
-        tableName: this.state.tableName,
-        categoryTable: {
-          categoryid: categoryId,
-          category: categoryName,
-          isactive: isactive
-        }
-      };
-    requests.editRecord(data, this, this.getCategory.bind(this));
-    this.onCancelCategory();
-  }
+      tableName: this.state.tableName,
+      categoryTable: {
+        categoryid: categoryId,
+        category: categoryName,
+        isactive: isactive
+      }
+    };
 
+    if(categoryName === ""){
+      this.setState({
+        alertOpen: true,
+        alertMessage: 'Category Name is a required field.'
+      })
+      return;
+    }
+    
+    requests.editRecord(data, this, this.getCategory.bind(this));
+    this.handleFormClose();
+  }
 
   getCategory(){
     const table_name = 'category_view';
     requests.getDataByTableName(table_name, this);
   }
+
   onItemClick(category){
         
     var rowInfo = {
         original: category
     }
     
-    this.setState({rowInfo: rowInfo});
+    this.setState({
+      rowInfo: rowInfo,
+      formOpen: true
+    });
   }
+
   onRowClick(state, rowInfo, column, instance){
     return {
       onClick: e => {
@@ -68,20 +109,7 @@ export default class Category extends Component {
       }
     }
   }
-  onLoadCategory(rowInfo = null){
-    if(rowInfo.original){
-      document.getElementById("categoryId").value = rowInfo.original.categoryid;
-      document.getElementById("categoryName").value = rowInfo.original.CategoryName;
-      document.getElementById("isactive").checked = true;
-    }else if(this){
-      document.getElementById("categoryId").value = 0;
-      document.getElementById("categoryName").value = "";
-    }
-    var addExpense = document.getElementById("addCategory");
-    addExpense.style.display = "block";
-    var expenseData = document.getElementById("categoryTable")
-    expenseData.style.display = "none";
-  }
+
   onCancelCategory(){
     var addExpense = document.getElementById("addCategory");
     addExpense.style.display = "none";
@@ -89,54 +117,118 @@ export default class Category extends Component {
     expenseData.style.display = "block";
   }
 
-  renderCategoryForm(rowInfo = null){
+  renderForm(rowInfo = null){
+
     var categoryId = 0;
-    if(rowInfo){
+    var categoryName = "";
+    
+    if(rowInfo && rowInfo.original){
       categoryId = rowInfo.original.categoryid;
+      categoryName = rowInfo.original.CategoryName;
     }
-    var formWidth = window.innerWidth - 40;
-    var inputWidth = formWidth - 70;
-    let categoryForm = (
-      <form className="categoryForm">
-          <h1>Category</h1>
-          
-          <div className="contentform" style={{overflowY: 'auto', height: this.state.tableHeight + 3}}>
-              <div className="form-group" style={{width: formWidth}}>
-                  <p>Category Id: <span>*</span></p>
-                  <span className="icon-case"><i className="material-icons">fingerprint</i></span>
-                  <input type="number" id="categoryId" value={categoryId} readOnly style={{width: inputWidth}}/>
-              </div> 
-
-              <div className="form-group" style={{width: formWidth}}>
-              <p>Category Name <span>*</span></p>
-              <span className="icon-case"><i className="material-icons">keyboard</i></span>
-                  <input type="textarea" name="categoryName" id="categoryName" style={{width: inputWidth}}/>
-              </div>
-
-              <div className="form-group" style={{width: formWidth}}>
-                  <p>IsActive: </p>
-                  <span className="icon-case"><i className="material-icons">done</i></span>
-                  <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
-              </div>
-              <Paper style={{textAlign:'center', height:150}}>
-                        <FloatingActionButton backgroundColor='red' onClick={this.onCancelCategory} style={{marginRight:50, marginTop:6}}>
-                            <ContentClear />
-                        </FloatingActionButton>
-                        <FloatingActionButton backgroundColor='green' onClick={this.onSubmit.bind(this)} style={{marginLeft:50, marginTop:6}}>
-                            <ContentSave />
-                        </FloatingActionButton>
-                    </Paper>
-          </div>
-      </form> 
-    );
+    
+    const actions = [
+      <RaisedButton
+        backgroundColor={styles.raisedButton.backgroundColor}
+        icon={<ContentClear />}
+        style={styles.raisedButton}
+        onClick={this.handleFormClose}
+      />,
+      <RaisedButton
+        backgroundColor="#a4c639"
+        icon={<ContentSave />}
+        style={styles.raisedButton}
+        onClick={this.onSubmit.bind(this)}
+      />
+    ];
+    
+    var categoryForm = (
+      <div>
+        <Dialog
+          title="Category"
+          actions={actions}
+          modal={false}
+          open={this.state.formOpen}
+          onRequestClose={this.handleFormClose}
+          autoDetectWindowHeight={true}
+          autoScrollBodyContent={true}
+          bodyStyle={styles.contentForm}
+          actionsContainerStyle={styles.contentForm}
+          titleStyle={styles.contentForm}
+        >
+          <br />
+          <TextField
+            id="categoryId"
+            floatingLabelText="Category Id:"
+            floatingLabelStyle={styles.floatingLabelStyle}
+            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+            defaultValue={categoryId}
+            disabled={true}
+            fullWidth={true}
+          />
+          <br />
+          <TextField
+            id="categoryName"
+            floatingLabelText="Category Name:"
+            floatingLabelStyle={styles.floatingLabelStyle}
+            floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+            errorText="This field is required"
+            errorStyle= {styles.errorStyle}
+            fullWidth={true}
+            floatingLabelFixed={true}
+            defaultValue={categoryName}
+          />
+          <br /><br />
+          <Toggle
+            id="isActive"
+            label="Is Active: "
+            labelStyle={styles.floatingLabelStyle}
+            defaultToggled={true}
+            style={styles.toggle}
+          />
+        </Dialog>
+      </div>
+    )
+   
     return categoryForm;
   }
 
-  render() {
-    var overlay = this.state.rowInfo ? this.onLoadCategory(this.state.rowInfo) : null;
+  renderInvalidDataAlert(){
+    const actions = [
+      <RaisedButton
+        label="Close"
+        primary={false}
+        onClick={this.handleAlertClose}
+      />,
+    ];
 
     return (
-      <div style={{height:this.props.appHeights.contentHeight}}>
+      <div>
+        <Dialog
+          title="Form Validation"
+          actions={actions}
+          modal={false}
+          open={this.state.alertOpen}
+          onRequestClose={this.handleAlertClose}
+          autoDetectWindowHeight={true}
+          autoScrollBodyContent={true}
+        >
+          {this.state.alertMessage}
+        </Dialog>
+      </div>
+    );
+  }
+
+  render() {
+    
+    var categoryView = (
+      <CircularProgress size={80} thickness={5} />
+    );
+
+    if(this.state.data.length > 0){
+      categoryView = (
+        <div style={{height:this.props.appHeights.contentHeight}}>
+          
           <Paper id="categoryTable" style={styles.content} >
             <GridList 
               data={this.state.data}
@@ -145,20 +237,38 @@ export default class Category extends Component {
               renderScreen='category'
               />
 
-            <FloatingActionButton style={styles.floatingButton} onClick={this.onLoadCategory.bind(this)}>
+            <FloatingActionButton style={styles.floatingButton} onClick={this.handleFormOpen}>
               <ContentAdd />
             </FloatingActionButton>
           </Paper>
-        <div id="addCategory" style={{display: 'none'}}>
-          {this.renderCategoryForm(this.state.rowInfo)}
+          {this.renderForm(this.state.rowInfo)}
+          {this.renderInvalidDataAlert()}
         </div>
-        {overlay}
-      </div>
-    )
+      )
+    }
+
+    return categoryView;
   }
 };
 
 const styles = {
+  toggle: {
+    marginBottom: 16,
+    textAlign: 'left',
+  },
+  errorStyle: {
+    textAlign: 'left',
+    color: deepOrange900,
+  },
+  underlineStyle: {
+    borderColor: teal900,
+  },
+  floatingLabelStyle: {
+    color: teal900,
+  },
+  floatingLabelFocusStyle: {
+    color: "white",
+  },
   floatingButton: {
       position: 'fixed',
       zIndex: 2,
@@ -167,5 +277,17 @@ const styles = {
   },
   content: {
     height: '100%'
+  },
+  contentForm: {
+    textAlign: 'left',
+    backgroundColor: teal500,
+  },
+  raisedButton: {
+    margin: 12,
+    width: '40%',
+    backgroundColor: deepOrange900
+  },
+  formButtons: {
+
   }
 };

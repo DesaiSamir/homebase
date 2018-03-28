@@ -7,7 +7,15 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import Paper from 'material-ui/Paper';
-
+import CircularProgress from 'material-ui/CircularProgress';
+import TextField from 'material-ui/TextField';
+import {teal500, teal900, deepOrange900} from 'material-ui/styles/colors';
+import Toggle from 'material-ui/Toggle';
+import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
+import DatePicker from 'material-ui/DatePicker';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 export default class Expense extends Component {
 
@@ -21,7 +29,11 @@ export default class Expense extends Component {
             today: "",
             category: [],
             rowInfo: null,
-            tableName: 'expenseTable'
+            tableName: 'expenseTable',
+            alertOpen: false,
+            formOpen: false,
+            categoryValue: 1,
+            alertMessage: ""
         };
     }
 
@@ -34,32 +46,42 @@ export default class Expense extends Component {
             today: today,
             tableHeight: window.innerHeight - appHeights.tableHeight
         });
-        var expenseDate = document.getElementById("expenseDate");
-        expenseDate.value = today;
+        
     }
+    
+    handleAlertOpen = () => {
+        this.setState({alertOpen: true});
+    };
 
-    componentDidUpdate(){
-        var category = document.getElementById("categoryid");
-        var options = ""
-        if(this.state.category)
-            this.state.category.forEach(cat => {
-                options += "<option data-id=" + cat.categoryid + ">" + cat.CategoryName + "</option>";
-            });
-        if(!this.state.rowInfo)
-            category.innerHTML = options;        
+    handleAlertClose = () => {
+        this.setState({alertOpen: false});
+    };
+    
+    handleFormOpen = () => {
+        this.setState({formOpen: true});
+    };
+
+    handleFormClose = () => {
+        this.setState({
+            formOpen: false,
+            rowInfo: null
+        });
+    };
+
+    handleCategoryChange = (event, index, value) => {
+        this.setState({
+            categoryValue: value
+        })
     }
-    
-    
 
     onSubmit(){
         const expenseid = document.getElementById("expenseId").value;
         const expense_date = document.getElementById("expenseDate").value;
         const title = document.getElementById("title").value;
-        const categoryNode = document.getElementById("categoryid");
-        const categoryid = parseInt(categoryNode.childNodes[categoryNode.selectedIndex].getAttribute("data-id"),0);
+        const categoryid = this.state.categoryValue;
         const cost = parseInt(document.getElementById("cost").value,0);
         var isactive = 0;
-        if(document.getElementById("isactive").checked){
+        if(document.getElementById("isActive").checked){
             isactive = 1;
         }
         var data =  {
@@ -72,52 +94,19 @@ export default class Expense extends Component {
                 cost: cost,
                 isactive: isactive
             }
-          };
-        requests.editRecord(data, this, this.getExpense.bind(this))
-        this.onCancelExpense();
-    }
-
-    onLoadExpense(rowInfo = null){
-        if(rowInfo.original){
-            document.getElementById("expenseId").value = rowInfo.original.expenseid;
-            document.getElementById("expenseDate").value = rowInfo.original.Date;
-            document.getElementById("title").value = rowInfo.original.Title;
-            document.getElementById("cost").value = rowInfo.original.Cost;
-            document.getElementById("isactive").checked = true;
-            var category = document.getElementById("categoryid");
-            var i = 0;
-            category.childNodes.forEach(node => {
-                if(rowInfo.original.Category.toLowerCase() === node.innerHTML.toLowerCase()){
-                    category.selectedIndex = i;
-                    category.value = rowInfo.original.Category;
-                }
-                i = i + 1;
-            });
-            
-        }else if(this){
-            document.getElementById("expenseId").value = 0;
-            document.getElementById("expenseDate").value = this.state.today;
-            document.getElementById("title").value = "";
-            document.getElementById("cost").value = 7;
+        };
+        
+        if(title === "" || cost === 0){
+            this.setState({
+              alertOpen: true,
+              alertMessage: 'All the required fields need to be populated is a required field.'
+            })
+            return;
         }
-        var addExpense = document.getElementById("addExpense");
-        addExpense.style.display = "block";
-        var expenseData = document.getElementById("expenseTable")
-        expenseData.style.display = "none";
-    }
-    onCancelExpense(){
-        var addExpense = document.getElementById("addExpense");
-        addExpense.style.display = "none";
-        var expenseData = document.getElementById("expenseTable")
-        expenseData.style.display = "block";
+        requests.editRecord(data, this, this.getExpense.bind(this))
+        this.handleFormClose();
     }
 
-    renderExpenseHeader(){
-        return (<form  style={{height: this.props.appHeights.pageHeaderHeight}}>
-                <h1>Expense Data</h1>
-            </form>
-        );
-    }
 
     increaseCounter(){
         var costInput = document.getElementById("cost");
@@ -131,81 +120,6 @@ export default class Expense extends Component {
         var val = costInput.valueAsNumber;
         val = val - 1
         costInput.value = val;
-    }
-
-    renderExpenseForm(rowInfo = null){
-
-        var expenseId = 0;
-        var cost = "7";
-        if(rowInfo){
-            expenseId = rowInfo.original.expenseid;
-        }
-        var formWidth = window.innerWidth - 40;
-        var inputWidth = formWidth - 70;
-        let expenseForm = (
-            <form className="categoryForm">
-                
-                <div className="contentform" style={{overflowY: 'scroll', WebkitOverflowScrolling: 'touch',height: this.state.tableHeight + 70}}>
-                    <div className="form-group" style={{width: formWidth}}>
-                        <p>Expense Id: <span>*</span></p>
-                        <span className="icon-case"><i className="material-icons">fingerprint</i></span>
-                        <input type="number" id="expenseId" value={expenseId} readOnly style={{width: inputWidth}}/>
-                    </div> 
-                    
-                    <div className="form-group" style={{width: formWidth}}>
-                        <p>Expense Date<span>*</span></p>
-                        <span className="icon-case"><i className="material-icons">insert_invitation</i></span>
-                        <input type="date" id="expenseDate" data-rule="required" style={{width: inputWidth}}/>
-                    </div> 
-
-                    <div className="form-group" style={{width: formWidth}}>
-                    <p>Expense Title <span>*</span></p>
-                    <span className="icon-case"><i className="material-icons">keyboard</i></span>
-                        <input type="textarea" name="title" id="title" style={{width: inputWidth}}/>
-                    </div>
-
-                    <div className="form-group" style={{width: formWidth}}>
-                    <p>Category <span>*</span></p>
-                    <span className="icon-case"><i className="material-icons">list</i></span>
-                        <select id="categoryid" style={{width: inputWidth + 33}}/>
-                    </div>
-
-                    <div className="form-group" style={{width: formWidth}}>
-                        <p>Expense Cost <span>*</span></p> 
-                        <div className="cost-group"> 
-                            <span className="icon-case"><i className="material-icons">monetization_on</i></span>
-                            <input type="number" name="cost" id="cost" defaultValue={cost} data-rule="maxlen:10" style={{borderRadius: 0, width: inputWidth - 70}}/>
-                        </div>
-                        <div>
-                            <span className="icon-case" style={{borderRadius: 0, cursor: 'pointer'}} onClick={this.increaseCounter}><i className="material-icons" >add_box</i></span>
-                            <span className="icon-case" style={{borderTopRightRadius: 5, 
-                                                                borderBottomRightRadius: 5,
-                                                                borderTopLeftRadius: 0,
-                                                                borderBottomLeftRadius: 0,
-                                                                cursor: 'pointer'
-                                                                }} onClick={this.decreaseCounter}>
-                                        <i className="material-icons">remove_circle</i></span>
-                        </div>
-                    </div>
-
-                    <div className="form-group" style={{width: formWidth}}>
-                        <p>IsActive: </p>
-                        <span className="icon-case"><i className="material-icons">done</i></span>
-                        <input type="checkbox" id="isactive" defaultChecked={true} style={{width: inputWidth }}/>
-                    </div>
-                    <Paper style={{textAlign:'center', height:150}}>
-                        <FloatingActionButton backgroundColor='red' onClick={this.onCancelExpense} style={{marginRight:50, marginTop:6}}>
-                            <ContentClear />
-                        </FloatingActionButton>
-                        <FloatingActionButton backgroundColor='green' onClick={this.onSubmit.bind(this)} style={{marginLeft:50, marginTop:6}}>
-                            <ContentSave />
-                        </FloatingActionButton>
-                    </Paper>
-                </div>
-            </form> 
-        );
-
-        return expenseForm;
     }
 
     getExpense(){
@@ -223,42 +137,209 @@ export default class Expense extends Component {
             original: expense
         }
         
-        this.setState({rowInfo: rowInfo});
+        this.setState({
+            rowInfo: rowInfo,
+            formOpen: true,
+            categoryValue: expense.categoryid
+        });
     }
 
-    onRowClick(state, rowInfo, column, instance){
-        return {
-            onClick: e => {
-                this.setState({rowInfo: rowInfo});
-            }
+    renderForm(rowInfo = null){
+
+        var expenseId = 0;
+        var title = "";
+        var expenseDate = new Date();
+        var categoryId = this.state.categoryValue;
+        var cost = 7;
+        
+
+        if(rowInfo && rowInfo.original){
+            expenseId = rowInfo.original.expenseid;
+            title = rowInfo.original.Title;
+            expenseDate = new Date(new Date(rowInfo.original.Date).getTime()  + 300*60*1000)
+            cost = rowInfo.original.Cost;
         }
+        
+        const actions = [
+          <RaisedButton
+            backgroundColor={styles.raisedButton.backgroundColor}
+            icon={<ContentClear />}
+            style={styles.raisedButton}
+            onClick={this.handleFormClose}
+          />,
+          <RaisedButton
+            backgroundColor="#a4c639"
+            icon={<ContentSave />}
+            style={styles.raisedButton}
+            onClick={this.onSubmit.bind(this)}
+          />
+        ];
+        
+        var form = (
+          <div>
+            <Dialog
+              title="Expense"
+              actions={actions}
+              modal={false}
+              open={this.state.formOpen}
+              onRequestClose={this.handleFormClose}
+              autoDetectWindowHeight={true}
+              autoScrollBodyContent={true}
+              bodyStyle={styles.contentForm}
+              actionsContainerStyle={styles.contentForm}
+              titleStyle={styles.contentForm}
+            >
+                <TextField
+                    id="expenseId"
+                    floatingLabelText="Expense Id:"
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    defaultValue={expenseId}
+                    disabled={true}
+                    fullWidth={true}
+                />
+                <br />
+                <DatePicker
+                    id="expenseDate"
+                    floatingLabelText="Expense Date:"
+                    firstDayOfWeek={0}
+                    floatingLabelFixed={true}
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    fullWidth={true}
+                    errorStyle= {styles.errorStyle}
+                    defaultDate={expenseDate}
+                />
+                <TextField
+                    id="title"
+                    floatingLabelText="Expense Title:"
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    errorText="This field is required"
+                    errorStyle= {styles.errorStyle}
+                    fullWidth={true}
+                    floatingLabelFixed={true}
+                    defaultValue={title}
+                    multiLine={true}
+                />
+                <br />
+                <SelectField
+                    id="categoryId"
+                    floatingLabelText="Category Name:"
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    value={categoryId}
+                    onChange={this.handleCategoryChange}
+                    fullWidth={true}
+                    floatingLabelFixed={true}
+                    style={styles.elementStyle}
+                >
+                    {this.state.category.map((cat) => (
+                        <MenuItem value={cat.categoryid} primaryText={cat.CategoryName} />
+                    ))}
+                </SelectField>
+                <br />
+                <TextField
+                    id="cost"
+                    floatingLabelText="Cost:"
+                    floatingLabelStyle={styles.floatingLabelStyle}
+                    floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
+                    errorText="This field is required"
+                    errorStyle= {styles.errorStyle}
+                    fullWidth={true}
+                    floatingLabelFixed={true}
+                    defaultValue={cost}
+                />
+                <br /><br />
+                <Toggle
+                  id="isActive"
+                  label="Is Active: "
+                  labelStyle={styles.floatingLabelStyle}
+                  defaultToggled={true}
+                  style={styles.toggle}
+                />
+            </Dialog>
+          </div>
+        )
+       
+        return form;
     }
 
-    render() {
-        var overlay = this.state.rowInfo ? this.onLoadExpense(this.state.rowInfo) : null;
+    renderInvalidDataAlert(){
+        const actions = [
+            <RaisedButton
+                label="Close"
+                primary={false}
+                onClick={this.handleAlertClose}
+            />,
+        ];
+    
         return (
-            <div style={{height:this.props.appHeights.contentHeight}}>
-                <Paper id="expenseTable" style={styles.content}>
-                    <GridList 
-                        data={this.state.data}
-                        gridHeight={this.state.tableHeight}
-                        onItemClick={this.onItemClick.bind(this)}
-                        renderScreen='expense' />
-
-                    <FloatingActionButton style={styles.floatingButton} onClick={this.onLoadExpense.bind(this)}>
-                        <ContentAdd />
-                    </FloatingActionButton>
-                </Paper>
-                <Paper id="addExpense" style={{display: 'none', height: this.state.tableHeight, overflowY: 'scroll'}}>
-                    {this.renderExpenseForm(this.state.rowInfo)}
-                </Paper>
-                {overlay}
+            <div>
+                <Dialog
+                title="Form Validation"
+                actions={actions}
+                modal={false}
+                open={this.state.alertOpen}
+                onRequestClose={this.handleAlertClose}
+                autoDetectWindowHeight={true}
+                autoScrollBodyContent={true}
+                >
+                {this.state.alertMessage}
+                </Dialog>
             </div>
-        )
+        );
+    }
+    render() {
+        var expenseView = (
+            <div style={styles.loading}>
+                <CircularProgress size={80} thickness={5}  />
+            </div>
+        );
+
+        if(this.state.data.length > 0 && this.state.category.length > 0){
+            expenseView = (
+                <div style={{height:this.props.appHeights.contentHeight}}>
+                    <Paper id="expenseTable" style={styles.content}>
+                        <GridList 
+                            data={this.state.data}
+                            gridHeight={this.state.tableHeight}
+                            onItemClick={this.onItemClick.bind(this)}
+                            renderScreen='expense' />
+
+                        <FloatingActionButton style={styles.floatingButton} onClick={this.handleFormOpen}>
+                            <ContentAdd />
+                        </FloatingActionButton>
+                    </Paper>
+                    {this.renderForm(this.state.rowInfo)}
+                    {this.renderInvalidDataAlert()}
+                </div>
+            )
+        }
+
+        return expenseView;
     }
 };
 
 const styles = {
+    toggle: {
+        marginBottom: 16,
+        textAlign: 'left',
+    },
+    errorStyle: {
+        textAlign: 'left',
+        color: deepOrange900,
+    },
+    underlineStyle: {
+        borderColor: teal900,
+        textAlign: 'left',
+    },
+    floatingLabelStyle: {
+        color: teal900,
+    },
+    floatingLabelFocusStyle: {
+        color: "white",
+    },
     floatingButton: {
         position: 'fixed',
         zIndex: 2,
@@ -266,6 +347,21 @@ const styles = {
         right: 5,
     },
     content: {
-      height: '100%'
+        height: '100%'
+    },
+    contentForm: {
+        textAlign: 'left',
+        backgroundColor: teal500,
+    },
+    raisedButton: {
+        margin: 12,
+        width: '40%',
+        backgroundColor: deepOrange900
+    },
+    elementStyle: {
+        textAlign: 'left',
+    },
+    loading:{
+        paddingTop: '50%'
     }
   };

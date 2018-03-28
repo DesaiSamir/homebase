@@ -29,7 +29,7 @@ class App extends Component {
     styles.header.height = this.props.appHeights.appHeaderHeight
 
     return (
-      <Paper zDepth={-1}>
+      <Paper>
         <AppBar 
           title="Expense App"
           style={styles.header}

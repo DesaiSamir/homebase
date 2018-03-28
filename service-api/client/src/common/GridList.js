@@ -6,10 +6,13 @@ import Mileage from '../images/mileage-brown.png'
 import Books from '../images/books-red.png'
 import Tips from '../images/tip-black.png'
 import Meals from '../images/meals-yellow.png'
+import Tools from '../images/tools-green.png'
+import Hotel from '../images/hotel-blue.png'
 import Unknown from '../images/unknown-blue.png'
 import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
-import isDblTouchTap from "./DoubleTap"
+import isDblTouchTap from "./DoubleTap";
+import CircularProgress from 'material-ui/CircularProgress';
 
 export default class MuiGridList extends Component {
     constructor(props) {
@@ -66,6 +69,7 @@ export default class MuiGridList extends Component {
         });
         return gridData;
     }
+    
     renderCategoryLogoSwitch(param) {
         switch(param) {
             case 'Seminars':
@@ -78,6 +82,10 @@ export default class MuiGridList extends Component {
                 return Meals;
             case 'Tip':
                 return Tips;
+            case 'Hotel':
+                return Hotel;
+            case 'Tools':
+                return Tools;
             default:
                 return Unknown;
         }
@@ -198,7 +206,7 @@ export default class MuiGridList extends Component {
             case 'category':
                 return this.renderCategoryList();            
             default:
-                return "";
+                return <CircularProgress size={80} thickness={5} />;
         }
     }
 

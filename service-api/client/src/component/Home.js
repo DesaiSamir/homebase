@@ -7,6 +7,7 @@ import Table from '../common/TableComponent';
 import SupportTouch from '../common/SupportTouch';
 import requests from '../utils/requestHelper';
 import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 import '../style/home.css';
 import '../style/react-tabs.css';
 
@@ -310,11 +311,18 @@ export default class Home extends Component{
     select = (index) => this.setState({selectedIndex: index});
 
     render(){
-        return (
-            <Paper >
-                {this.renderTabs()}
-            </Paper>
+        var homeView = (
+            <CircularProgress size={80} thickness={5} />
         );
+    
+        if(this.state.sum_category_by_year.length > 0){
+            homeView = (
+                <Paper >
+                    {this.renderTabs()}
+                </Paper>
+            )
+        }
+        return homeView;
     }
 }
 
