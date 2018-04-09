@@ -7,6 +7,7 @@ import Books from '../images/books-red.png'
 import Tips from '../images/tip-black.png'
 import Meals from '../images/meals-yellow.png'
 import Tools from '../images/tools-green.png'
+import Toll from '../images/toll-yellow.png'
 import Hotel from '../images/hotel-blue.png'
 import Unknown from '../images/unknown-blue.png'
 import Avatar from 'material-ui/Avatar';
@@ -86,6 +87,8 @@ export default class MuiGridList extends Component {
                 return Hotel;
             case 'Tools':
                 return Tools;
+            case 'Toll':
+                return Toll;
             default:
                 return Unknown;
         }

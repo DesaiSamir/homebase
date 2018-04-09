@@ -3,6 +3,14 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+@font-face {
+  font-family: 'MAGNETOB';
+  src: url(../fonts/MAGNETOB.TTF) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   overflow: hidden;
 }

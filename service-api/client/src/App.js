@@ -31,8 +31,9 @@ class App extends Component {
     return (
       <Paper>
         <AppBar 
-          title="Expense App"
+          title="Expenses"
           style={styles.header}
+          titleStyle={styles.titleStyle}
           iconElementLeft={ <img src={logo} alt="logo" style={styles.appLogo}/> }>
         </AppBar>        
         <Paper style={styles.body}>
@@ -87,5 +88,10 @@ const styles = {
   },
   header: {
     boxShadow: '0 4px 10px 0px rgba(0,0,0,0.8)',
+    fontFamily: 'MAGNETOB',
+  },
+  titleStyle: {
+    fontSize: '3em',
+    textShadow: 'rgb(0, 0, 0) 3px 3px 0px',
   }
 }
