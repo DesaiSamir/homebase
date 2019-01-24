@@ -28,7 +28,7 @@ CREATE TABLE `expense` (
   `expenseid` int(11) NOT NULL AUTO_INCREMENT,
   `categoryid` int(11) DEFAULT NULL,
   `isactive` tinyint(1) NOT NULL DEFAULT '1',
-  `details` json DEFAULT NULL,
+  `details` varchar(65532) DEFAULT NULL,
   PRIMARY KEY (`expenseid`),
   UNIQUE KEY `expense_id_UNIQUE` (`expenseid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
