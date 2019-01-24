@@ -29,7 +29,7 @@
     "express": "^4.16.2",
     "fs": "0.0.1-security",
     "knex": "^0.14.2",
-    "mysql": "^2.15.0",
+    "mysql": "^2.16.0",
     "react-chartkick": "^0.1.6"
   },
   "devDependencies": {
