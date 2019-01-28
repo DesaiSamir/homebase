@@ -7,7 +7,6 @@
  */
 const express = require('express')
 const bodyParser = require('body-parser')
-const store = require('./store')
 const app = express()
 const mysql = require('mysql');
 const conn = require('./mysql')
@@ -60,29 +59,6 @@ app.post('/editRecord', (req, res) => {
   getData(res, query)
 })
 
-
-app.post('/createUser', (req, res) => {
-  store
-    .createUser({
-      username: req.body.username,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      password: req.body.password
-    })
-    .then(() => res.sendStatus(200))
-})
-
-app.post('/login', (req, res) => {
-  store
-    .authenticate({
-      username: req.body.username,
-      password: req.body.password
-    })
-    .then(({ success }) => {
-      if (success) res.sendStatus(200)
-      else res.sendStatus(401)
-    })
-})
 
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
