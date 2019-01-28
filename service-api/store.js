@@ -5,6 +5,12 @@ module.exports = {
   getHomebaseData(table_name){
     return knex(table_name)
   },
+  getHomebaseDataNew(connection, table_name){
+    connection.connection.query('SELECT * from ' + connection.table_name, function (error, results, fields) {
+      if (error) return error;
+      return results;
+    });
+  },
   editRecord({ tableName, data }){
     return knex.raw('call homebase.usp_edit_table_data(?)', [data])
     .catch(function(error) {

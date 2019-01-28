@@ -1,16 +1,15 @@
 var mysql = require('mysql');
 
-var con = mysql.createConnection({
-  host: "127.0.0.1",
+var connection = mysql.createConnection({
+  host: "141.152.252.185",
   user: "homebase",
-  password: "Homebase"
+  password: "Homebase",
+  port: 12003
 });
 
-con.connect(function(err) {
+connection.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("Result: " + result);
-  });
 });
+
+connection.end();
