@@ -58,11 +58,6 @@ app.post('/editRecord', (req, res) => {
 
   var query = ("call homebase.usp_edit_table_data('" + data + "')");
   getData(res, query)
-  // store
-  //   .editRecord({
-  //     data: req.body.data
-  //   })
-  //   .then(() => res.sendStatus(200))
 })
 
 
