@@ -1,9 +1,14 @@
 #!/bin/bash
 
-cd /app/client
-echo "build client"
-yarn build
+cp -r /app /root
 
-cd /app
+# cd /root/app/client
+# echo "build client"
+# yarn build
+
+cd /root/app
+echo "Install npm for service"
+npm install
+
 echo "Start Applocation"
 yarn start:prod
