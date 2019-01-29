@@ -1,0 +1,14 @@
+version: "3"
+services:
+  homebase:
+    command:
+      - /root/run.sh
+    container_name: homebase
+    image: homebase:latest
+    ports:
+      - 12005:3000/tcp
+    restart: always
+    volumes:
+      - /mnt/nas/git/homebase/service-api:/app
+    working_dir: /app
+
