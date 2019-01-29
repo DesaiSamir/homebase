@@ -10,5 +10,5 @@ cd /root/app
 echo "Install npm for service"
 npm install
 
-echo "Start Applocation"
+echo "Start Application"
 yarn start:prod
