@@ -1,13 +1,14 @@
-FROM arm64v8/node
+FROM arm64v8/node:slim
 
 MAINTAINER Samir Desai
 
 WORKDIR /app
 
-RUN npm i npm@latest -g \
-  && npm install yarn -g
+RUN echo "alias l='ls -lart'" > ~/.bashrc
 
-ADD ../run.sh /root/run.sh
+RUN npm install yarn -g
+
+ADD ./run.sh /root/run.sh
 
 EXPOSE 3000
 
