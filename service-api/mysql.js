@@ -1,7 +1,7 @@
 module.exports = {
     client: 'mysql',
     connection: {
-        host: "141.152.252.185",
+        host: "sd-home.mynetgear.com",
         user: "homebase",
         password: "Homebase",
         port: 12003,

@@ -1,7 +1,7 @@
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host: "141.152.252.185",
+  host: "sd-home.mynetgear.com",
   user: "homebase",
   password: "Homebase",
   port: 12003
