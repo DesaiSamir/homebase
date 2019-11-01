@@ -18,7 +18,7 @@ export default class Login extends Component{
                 window.location= "/Home";
             }
             else 
-                alert('login failed')
+                console.log('login failed')
             })
     }
 
