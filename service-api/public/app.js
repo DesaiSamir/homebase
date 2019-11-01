@@ -16,8 +16,8 @@ Login.addEventListener('submit', (e) => {
   const password = Login.querySelector('.password').value
   post('/login', { username, password })
     .then(({ status }) => {
-      if (status === 200) alert('login success')
-      else alert('login failed')
+      if (status === 200) console.log('login success')
+      else console.log('login failed')
     })
 })
 
@@ -32,7 +32,7 @@ CreateCategory.addEventListener('submit', (e) => {
 const GetCategory = document.querySelector('.GetCategory')
 GetCategory.addEventListener('submit',(e)=>{
   e.preventDefault()
-  var response = get('/category');
+//   var response = get('/category');
   get('/category')
     .then(function(res){
       if (res.ok) {
@@ -48,7 +48,7 @@ GetCategory.addEventListener('submit',(e)=>{
 const GetExpense = document.querySelector('.GetExpense')
 GetExpense.addEventListener('submit',(e)=>{
   e.preventDefault()
-  var response = get('/expense');
+//   var response = get('/expense');
   get('/expense')
     .then(function(res){
       if (res.ok) {
