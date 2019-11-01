@@ -20,8 +20,8 @@ export default {
         })
   },
   editRecord: function(data, that, callback){ 
-    data = JSON.stringify(data);
-    this.postData('/editRecord', { data })
+    dataStr = JSON.stringify(data);
+    this.postData('/editRecord', { dataStr })
         .then(({ status }) => {
           if (status === 200) {
             that.setState({rowInfo: null});
