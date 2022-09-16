@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3001/",
   "dependencies": {
-    "bootstrap": "^3.4.0",
+    "bootstrap": "^3.4.1",
     "chart.js": "^2.7.3",
     "history": "^4.7.2",
     "match-sorter": "^2.3.0",
